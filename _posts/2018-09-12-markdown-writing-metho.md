@@ -1,4 +1,10 @@
-[공통] 마크다운 markdown 작성법
+---
+layout: post
+title: Blogging with title
+tags: [Test, Ipsum, Markdown, Portfolio]
+---
+
+# [공통] 마크다운 markdown 작성법
 ======================
 
 # 1. 마크다운에 관하여
