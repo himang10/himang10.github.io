@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Blogging with title
+title: 마크다운 작성법
 tags: [Test, Ipsum, Markdown, Portfolio]
 ---
 

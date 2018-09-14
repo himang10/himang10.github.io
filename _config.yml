@@ -2,7 +2,7 @@
 baseurl: "/"
 url: "https://himang10.github.io"
 title: himang10's Blog # site's title
-description: "A website with blog posts and pages" # used by search engines
+description: "Reference site for Developer" # used by search engines
 
 
 # THEME-SPECIFIC CONFIGURATION
