@@ -1,5 +1,5 @@
 # SITE CONFIGURATION
-baseurl: "/himang10"
+baseurl: "/assets"
 url: "https://himang10.github.io"
 title: Type on Strap # site's title
 description: "A website with blog posts and pages" # used by search engines
