@@ -1,13 +1,9 @@
 ---
 layout: post
-title: DB Synch. Solution: SharePlex and Alternatives
-date: 2019-09-19
+title: DB Synch. Solution -  SharePlex and Alternatives
 tags: [db sync, sharePlex, DR]
-author: himang10
-description: Database Replication Solution에 대한 설명
+excerpt_separator:
 ---
-xxx
-============
 
 ## [SharePlex](https://alternativeto.net/software/shareplex/) - commercial
 ***Heterogenous Data Replication. Created by Quest Software***
