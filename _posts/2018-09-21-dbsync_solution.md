@@ -2,7 +2,6 @@
 layout: post
 title: DB Synch. Solution: SharePlex and Alternatives
 date: 2019-09-19
-categories: Data
 tags: [db sync, sharePlex, DR]
 author: himang10
 description: Database Replication Solution에 대한 설명
