@@ -2,10 +2,7 @@
 layout: post
 title: openldap configuration
 date: 2019-09-19
-categories: Security
 tags: [ldap, security]
-author: himang10
-description: explaination for openldap configuration
 ---
 
 # osixia/openldap
