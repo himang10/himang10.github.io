@@ -134,12 +134,12 @@ Files containing `changeType:` attributes will be loaded with `ldapmodify`.
 
 The startup script provides some substitutions in bootstrap ldif files. Following substitutions are supported:
 
-- `{{ LDAP_BASE_DN }}`
-- `{{ LDAP_BACKEND }}`
-- `{{ LDAP_READONLY_USER_USERNAME }}`
-- `{{ LDAP_READONLY_USER_PASSWORD_ENCRYPTED }}`
+- "{{ LDAP_BASE_DN }}"
+- "{{ LDAP_BACKEND }}"
+- "{{ LDAP_READONLY_USER_USERNAME }}"
+- "{{ LDAP_READONLY_USER_PASSWORD_ENCRYPTED }}"
 
-Other `{{ * }}` substitutions are left unchanged.
+Other "{{ * }}" substitutions are left unchanged.
 
 Since startup script modifies `ldif` files, you **must** add `--copy-service`
 argument to entrypoint if you don't want to overwrite them.
