@@ -1,6 +1,11 @@
 ---
 layout: post
-title: Sample post
-tags: [A Tag, Test, Lorem, Ipsum]
-excerpt_separator:
+title: github team으로 k8s group 설정하기
+date: 2019-09-19
+categories: kubernetes
+tags: [A kubernetes, group, team, role, rolebinding]
+author: himang10
+description: The read me page of jekyll-xixia.
 ---
+xxx
+============
