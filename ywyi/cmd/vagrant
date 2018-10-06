@@ -1,0 +1,2 @@
+vagrant ssh k8s
+#vagrant root  pwd: vagrant

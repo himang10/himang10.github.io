@@ -1,0 +1,25 @@
+kubectl get pod --show-all | -a
+## single command exectuion
+## SErvice Name: svce_name or svc_name.{namespace}.svc.cluster.local
+## POD Name: {pod_name}.{namespace}.pod.cluster.local
+kubectl exec node-js-pod -- curl <node-js-intenal IP -- Cluster IP | Service Name | Pod IP>
+## shell execution
+kubectl exec -it node-js-pod sh
+
+##  rolling update --> 단계적으로 한개씩 변경 실행
+kubectl scale --current-replicas=2 --replicas=3 rc node-js-scale
+kubectl rolling-update node-js-scale --image=jonbaier/pod-scaling:0.2 --update-priod="2m"
+kubectl rolling-update node-js-scale node-js-scale-v2.0 --image=jonbaier/pod-scaling:0.2 --update-period="30s"
+## rollout --> 버전을 그냥 교체하는 방법 (deployment rollout) - n개를 동시에 살리고 죽인다.
+kubectl set image deployment node-js-deploy node-js-deploy=jonbaier/pod-scaling:0.2
+kubectl rollout status deployment node-js-deploy
+
+kubectl rollout history deployment node-js-deploy
+## rollout undo
+kubectl rollout undo deployment node-js-deploy
+
+## pod autoscaling (HorizontalPodAutoscaler)
+kubectl get hpa  
+
+
+kubectl create -f node-js-deploy.yaml --record

@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hue-reminders
+  labels:
+    app: nginx
+spec:
+  replicas: 2
+  template:
+    metadata:
+      name: hue-reminders
+      labels:
+        app: hue-reminders
+    spec:
+      containers:
+      - name: hue-reminders-container
+        image: g1g1/hue-reminders:v2.2
+        ports:
+        - containerPort: 8080

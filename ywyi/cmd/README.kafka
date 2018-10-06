@@ -1,0 +1,24 @@
+$> brew cask install java
+
+$> brew install kafka
+
+$> vim ~/bin/kafka
+# ~/bin/kafka
+#!/bin/bash
+
+zkServer start
+kafka-server-start.sh /usr/local/etc/kafka/server.properties
+
+$> chmod +x ~/bin/kafka
+
+- properties: /usr/local/etc/kafka
+- Logs: /usr/local/var/log/kafka
+- Data: /usr/local/var/lib/kafka-logs
+
+---
+# brew command
+brew services start zookeeper
+brew services start kafka
+
+brew services stop kafka
+brew services stop zookeeper

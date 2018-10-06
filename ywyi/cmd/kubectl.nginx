@@ -1,0 +1,29 @@
+-----
+# nginx creation and test
+
+kubectl run nginx --image=nginx --replicas=2
+kubectl expose deployment nginx --port=80
+kubectl get svc,pod
+
+# busybox로 container 실행후 통신 실행
+kubectl run busybox --rm -ti --image=busybox /bin/sh
+wget --spider --timeout=1 nginx
+
+# limit access to the nginx service
+kubectl create -f nginx-policy.yaml
+
+#Test access to the serivce when access label is not defined
+#If we attempt to access the nginx Service from a pod without the correct labels, the request will now time out:
+kubectl run busybox --rm -ti --image=busybox /bin/sh
+wget --spider --timeout=1 nginx
+
+kubectl run busybox --rm -ti --labels="access=true" --image=busybox /bin/sh
+or 
+kubectl exec -it busybox sh -n testkaka
+## 접속후
+nslookup
+vi /etc/hosts
+cat /etc/resolv.conf
+
+wget --spider --timeout=1 nginx
+dig naver.com

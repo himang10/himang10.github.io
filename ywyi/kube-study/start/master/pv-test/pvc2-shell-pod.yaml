@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: just-a-shell2
+spec:
+  containers:
+  - name: just-a-shell
+    image: ubuntu
+    command: ["/bin/bash", "-c", "while true ; do sleep 10 ; done"]
+    volumeMounts:
+    - mountPath: "/data"
+      name: pv
+  - name: another-shell
+    image: ubuntu
+    command: ["/bin/bash", "-c", "while true ; do sleep 10 ; done"]
+    volumeMounts:
+    - mountPath: "/data"
+      name: pv
+  volumes:
+  - name: pv
+    persistentVolumeClaim:
+      claimName: pvc-2

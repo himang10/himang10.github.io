@@ -1,0 +1,19 @@
+###
+kubernetes.io/hostname              : 기반 인스턴스나 머신의 호스트 이름을 나타냄
+beta.kubernetes.io/os               : Go 언어를 통해 보고받은 기반 운영체제
+beta.kuberenets.io/arch             : Go 언어를 통해 보고받은 기반 프로세서 아키텍처 
+beta.kuberenetes.io/instance-type
+failuer-domain.beta.kubernetes.io/region
+failure-domain.beta.kubernetes.io/zone
+
+##example
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/os=linux
+                    kubernetes.io/hostname=k8s3.nogada.dev
+                    node-role.kubernetes.io/master=
+                    nodenickname=trusty-steve
+
+kubectl describe node <nodename>
+
+kubectl label nodes <nodename> nodenickname=trusty-steve
+

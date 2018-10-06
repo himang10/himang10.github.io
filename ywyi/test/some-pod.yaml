@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sm-pod
+  namespace: testkafka
+spec:
+  containers:
+  - name: sm-container
+    image: busybox
+    command:
+      - /bin/sh
+      - -c
+      - env
+    env:
+      - name: DB_IP_ADDRESS
+        valueFrom:
+          configMapKeyRef:
+            name: db-config
+            key: db-ip-addresses
+  restartPolicy: Never

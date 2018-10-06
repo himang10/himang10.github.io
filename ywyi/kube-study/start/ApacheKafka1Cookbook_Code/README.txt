@@ -1,0 +1,1 @@
+Chapter 5, 7, and 9 don't have separate code files. They have code snippets and some Command line code. And some files that they are using already come with installation package.

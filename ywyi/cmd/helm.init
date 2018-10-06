@@ -1,0 +1,24 @@
+helm serve &
+
+helm repo list
+helm repo add localhost http://localhost:8879/charts
+helm repo reomve localhost
+
+#repoitory 등록
+helm repo list
+helm repo add  [Name] [URL== htpps://kubernetes-charts.storage.googleapis.com]
+helm repo update
+
+## helm install method
+#tar로 파일 받기
+mkdir keycloak
+cd keycloak
+helm search keycloak
+helm fetch stable/keycloak
+tar zxvf keycloak.tar.gz
+cd ..
+helm dep up keycloak # depencdency chart down
+
+
+#dependency chekc
+helm dep up keycloak

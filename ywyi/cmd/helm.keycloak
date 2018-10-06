@@ -1,0 +1,17 @@
+Keycloak can be accessed:
+
+* Within your cluster, at the following DNS name at port 80:
+
+  mykeycloak-http.devywyi.svc.cluster.local
+
+* From outside the cluster, run these commands in the same shell:
+
+  export NODE_PORT=$(kubectl get --namespace devywyi -o jsonpath="{.spec.ports[0].nodePort}" services mykeycloak-http)
+  export NODE_IP=$(kubectl get nodes --namespace devywyi -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+
+Login with the following credentials:
+Username: keycloak
+
+To retrieve the initial user password run:
+kubectl get secret --namespace devywyi mykeycloak-http -o jsonpath="{.data.password}" | base64 --decode; echo

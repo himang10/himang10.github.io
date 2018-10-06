@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: shell-2-many
+spec:
+  containers:
+  - name: shell-2-many
+    image: ubuntu
+    command: ["/bin/bash", "-c", "while true ; do sleep 10 ; done"]
+    volumeMounts:
+    - mountPath: "/data"
+      name: pv
+  - name: another-shell
+    image: ubuntu
+    command: ["/bin/bash", "-c", "while true ; do sleep 10 ; done"]
+    volumeMounts:
+    - mountPath: "/data"
+      name: pv
+  volumes:
+  - name: pv
+    persistentVolumeClaim:
+      claimName: pvc-2
