@@ -1,8 +1,10 @@
 ---
 layout: post
 title: Sample post
+date: 2019-01-06
+categories: Markdown
+author: himang10
 tags: [A Tag, Test, Lorem, Ipsum]
-excerpt_separator: <!--more-->
 ---
 
 Consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. 

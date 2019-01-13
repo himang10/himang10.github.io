@@ -2,6 +2,9 @@
 layout: post
 title: mibottle blog 사용법
 date: 2019-09-19
+date: 2019-01-06
+categories: Markdown
+author: himang10
 tags: [A kubernetes, group, team, role, rolebinding]
 author: himang10
 description: The read me page of jekyll-xixia.

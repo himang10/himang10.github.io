@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Feature images
+date: 2019-01-06
+categories: Markdown
+author: himang10
 feature-img: "assets/img/pexels/desk-messy.jpeg"
 thumbnail: "assets/img/thumbnails/desk-messy.jpeg"
 tags: [Test, Lorem]

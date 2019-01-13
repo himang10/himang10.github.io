@@ -1,6 +1,9 @@
 ---
 layout: post
 title: "Markup: Syntax Highlighting"
+date: 2019-01-06
+categories: Markdown
+author: himang10
 tags: [code]
 ---
 

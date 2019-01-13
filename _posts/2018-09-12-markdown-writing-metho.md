@@ -1,6 +1,9 @@
 ---
 layout: post
 title: 마크다운 작성법
+date: 2019-01-06
+categories: Markdown
+author: himang10
 tags: [Test, Ipsum, Markdown, Portfolio]
 ---
 

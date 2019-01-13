@@ -1,89 +1,103 @@
 ---
 layout: post
-title: Kubctl command
+title: Kubctl 명령어
 date: 2019-09-12
 categories: Kubernetes
 tags: [A Tag, kubectl, Lorem, Ipsum]
 author: himang10
 description: Kubernetes 관련 명령어 set 설명
 ---
+# Table of Contents
+1. [kubectl 기본 명령어](#kubectl-기본-명령어)
+1. [Rolling Update Command](#Rolling-Update-Command)
 
-#Kubectl CMD
 
-##kubectl 기본 명령어
+# Kubectl CMD
+
+## kubectl 기본 명령어
 
 ```
-# cluster-info
+#cluster-info
 kubectl cluster-info
 kubectl config current-context
 kubectl config use-context
 kubectl config view 
 kubectl get node --show-labels
 ```
+### kubectl에서 두개의 계정으로 명령어 실행
+두개의 서로 다른 권한을 가진 두개의 개정으로 각가 접속하여 처리하기 위한 방법
+````
+kubectl config set-credentials alice --username=alice --password=password
+kubectl config set-credientials bob --usernamw=bob --password=password
+kubectl --user bot create -f pod-priviledge.yaml
+````
 
-namespace 변경
+### namespace 변경
 ```
 #change namespace
 kubectl config view | grep current-context
 kubectl config set-context <current-context> --namespace=study
 ```
-POD 내에서 명령어 실행 방버
+### POD 내에서 명령어 실행 방버
 ```
-# docker exec
+#docker exec
 kubectl exec -it [pod name] -- bash
 kubectl exec -it [pod name] -c [container name] -- bash -il
-# example
+
+#example
 kubectl exec -it node-js-pod sh
 ```
 
-Context 추가 및 변경
+### Context 추가 및 변경
 ```
-# add context
+#add context
 kubectl config view
 kubectl config set-context testk --namespace=testkafka --cluster=k8s.nogada.dev --user=admin
-# change current-context
+
+#change current-context
 kubectl config use-context testk
 kubectl config current-context
 ```
 
-resource 검색 및 상세 검색
+### resource 검색 및 상세 검색
 ```
 kubectl get ns
 kubectl get [resource type] [resource-name] --namespace=kube-system or --all-namespaces
 
-## checking detail status
+##checking detail status
 kubectl describe [resource type] [resource-name] --namespace=kube-system or --all-namespaces
 ````
-Pod Log 상세 검색
+### Pod Log 상세 검색
 ```
-  # check Pod Logs
+  #check Pod Logs
   kubectl logs pod [pod-name]
-  # Return snapshot logs from pod nginx with only one container
+  
+  #Return snapshot logs from pod nginx with only one container
   kubectl logs nginx
 
-  # Return snapshot logs for the pods defined by label app=nginx
+  #Return snapshot logs for the pods defined by label app=nginx
   kubectl logs -lapp=nginx
 
-  # Return snapshot of previous terminated ruby container logs from pod web-1
+  #Return snapshot of previous terminated ruby container logs from pod web-1
   kubectl logs -p -c ruby web-1
 
-  # Begin streaming the logs of the ruby container in pod web-1
+  #Begin streaming the logs of the ruby container in pod web-1
   kubectl logs -f -c ruby web-1
 
-  # Display only the most recent 20 lines of output in pod nginx
+  #Display only the most recent 20 lines of output in pod nginx
   kubectl logs --tail=20 nginx
 
-  # Show all logs from pod nginx written in the last hour
+  #Show all logs from pod nginx written in the last hour
   kubectl logs --since=1h nginx
 
-  # Return snapshot logs from first container of a job named hello
+  #Return snapshot logs from first container of a job named hello
   kubectl logs job/hello
 
-  # Return snapshot logs from container nginx-1 of a deployment named nginx
+  #Return snapshot logs from container nginx-1 of a deployment named nginx
   kubectl logs deployment/nginx -c nginx-1
 ```
 
-Configmap 생성 및 상세 검색
+### Configmap 생성 및 상세 검색
 ```
 kubectl create configmap $map_name --from-file /PATH/filename or /PATH/
 kubectl create configmap literal-data --from-literal key1=value1 --from-literal key2=val2
@@ -91,7 +105,7 @@ kubectl describe configmaps $name
 kubectl get configmaps  $nam [-o yaml]
 ```
 
-yaml file을 이용하여 리소스를 생성 
+### yaml file을 이용하여 리소스를 생성 
 ```
 kubectl create -f ./my-manifest.yaml           # create resource(s)
 kubectl create -f ./my1.yaml -f ./my2.yaml     # create from multiple files
@@ -99,52 +113,52 @@ kubectl create -f ./dir                        # create resource(s) in all manif
 kubectl create -f https://git.io/vPieo         # create resource(s) from url
 ```
 
-resource 설명
+### resource 설명
 > kubectl explain pods,svc                       # get the documentation for pod and svc manifests
 
-resource 실행
+### resource 실행
 ```
-  # Start a single instance of nginx.
+  #Start a single instance of nginx.
   kubectl run nginx --image=nginx
 
-  # Start a single instance of hazelcast and let the container expose port 5701 .
+  #Start a single instance of hazelcast and let the container expose port 5701 .
   kubectl run hazelcast --image=hazelcast --port=5701
 
-  # Start a single instance of hazelcast and set environment variables "DNS_DOMAIN=cluster" and "POD_NAMESPACE=default"
+  #Start a single instance of hazelcast and set environment variables "DNS_DOMAIN=cluster" and "POD_NAMESPACE=default"
 in the container.
   kubectl run hazelcast --image=hazelcast --env="DNS_DOMAIN=cluster" --env="POD_NAMESPACE=default"
 
-  # Start a single instance of hazelcast and set labels "app=hazelcast" and "env=prod" in the container.
+  #Start a single instance of hazelcast and set labels "app=hazelcast" and "env=prod" in the container.
   kubectl run hazelcast --image=nginx --labels="app=hazelcast,env=prod"
 
-  # Start a replicated instance of nginx.
+  #Start a replicated instance of nginx.
   kubectl run nginx --image=nginx --replicas=5
 
-  # Dry run. Print the corresponding API objects without creating them.
+  #Dry run. Print the corresponding API objects without creating them.
   kubectl run nginx --image=nginx --dry-run
 
-  # Start a single instance of nginx, but overload the spec of the deployment with a partial set of values parsed from
+  #Start a single instance of nginx, but overload the spec of the deployment with a partial set of values parsed from
 JSON.
   kubectl run nginx --image=nginx --overrides='{ "apiVersion": "v1", "spec": { ... } }'
 
-  # Start a pod of busybox and keep it in the foreground, don't restart it if it exits.
+  #Start a pod of busybox and keep it in the foreground, don't restart it if it exits.
   kubectl run -i -t busybox --image=busybox --restart=Never
 
-  # Start the nginx container using the default command, but use custom arguments (arg1 .. argN) for that command.
+  #Start the nginx container using the default command, but use custom arguments (arg1 .. argN) for that command.
   kubectl run nginx --image=nginx -- <arg1> <arg2> ... <argN>
 
-  # Start the nginx container using a different command and custom arguments.
+  #Start the nginx container using a different command and custom arguments.
   kubectl run nginx --image=nginx --command -- <cmd> <arg1> ... <argN>
 
-  # Start the perl container to compute π to 2000 places and print it out.
+  #Start the perl container to compute π to 2000 places and print it out.
   kubectl run pi --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(2000)'
 
-  # Start the cron job to compute π to 2000 places and print it out every 5 minutes.
+  #Start the cron job to compute π to 2000 places and print it out every 5 minutes.
   kubectl run pi --schedule="0/5 * * * ?" --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(2000)'
 ```
-resource 삭제
+### resource 삭제
 ```
-## delete
+##delete
 kubectl delete -f ./pod.json                                              # Delete a pod using the type and name specified in pod.json
 kubectl delete pod,service baz foo                                        # Delete pods and services with same names "baz" and "foo"
 kubectl delete pods,services -l name=myLabel                              # Delete pods and services with label name=myLabel
@@ -155,13 +169,13 @@ kubectl -n my-ns delete po,svc --all                                      # Dele
 persistent volume을 정의하고 Pod 등에서 필요로 하는  Storage Class를 정의한다. Claim은 statefulset에서 설정
 persistent volume & persistence volume chaims & Storage Class
 ```
-## PV & PVC & StorageClass 
+##PV & PVC & StorageClass 
 kubectl -n testkafka describe pvc
 kubectl get storageclass | sc
-````
-<code>
 ```
-# persistent volume for local node disk volume
+
+```yaml
+#persistent volume for local node disk volume
 piVersion: v1
 kind: PersistentVolume
 metadata:
@@ -187,22 +201,24 @@ spec:
           - k8s2.nogada.dev
           - k8s3.nogada.dev
 ```
-</code>
 
-````
-# Storage Class
+
+```yaml
+#Storage Class
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: postgre-storage
 provisioner: kubernetes.io/no-provisioner
 volumeBindingMode: WaitForFirstConsumer
-````
+```
 
-#kube label view
+### kube label view
+```
 kubectl get <nodes, pods> --show-labels
-
-#kube info widw
+```
+### kube info wide
+```
 kubectl get <nodes | pods> -o wide
 
 kubectl create configmap game-config-env-file --from-env-file=docs/tasks/configure-pod-container/game-env-file.properties
@@ -213,37 +229,33 @@ kubectl create configmap game-config-env-file --from-env-file=docs/tasks/configu
 #   Lines beginning with # (i.e. comments) are ignored.
 #   Blank lines are ignored.
 #   There is no special handling of quotation marks (i.e. they will be part of the ConfigMap value)).
+```
 
 
-cat docs/tasks/configure-pod-container/game-env-file.properties
-enemies=aliens
-lives=3
-allowed="true"
-
-# This comment and the empty line above it are ignored
------
-
-## env
+### env
+```
 kubectl -n kube-system  exec tiller-deploy-759cb9df9-jhgvc -- printenv
+```
 
-# service info & DNS infos
+### service info & DNS infos
+```
 kubectl -n kube-system describe svc kubernetes-dashboard
 kubectl -n kube-system exec [pod name] -- yaml cmd execution
 kubectl -n kube-system exec [pod-name with command flag] -- nslookup hue-reminders
+```
 
------
-# nginx creation and test
-
+### nginx creation and test
+```
 kubectl run nginx --image=nginx --replicas=2
 kubectl expose deployment nginx --port=80
 kubectl get svc,pod
+```
 
-# busybox로 container 실행후 통신 실행
+### busybox로 container 실행후 통신 실행
+```
 kubectl run busybox --rm -ti --image=busybox /bin/sh
 wget --spider --timeout=1 nginx
 
-# limit access to the nginx service
-kubectl create -f nginx-policy.yaml
 
 #Test access to the serivce when access label is not defined
 #If we attempt to access the nginx Service from a pod without the correct labels, the request will now time out:
@@ -253,39 +265,118 @@ wget --spider --timeout=1 nginx
 kubectl run busybox --rm -ti --labels="access=true" --image=busybox /bin/sh
 or 
 kubectl exec -it busybox sh -n testkaka
-## 접속후
+
+##접속후
 nslookup
 vi /etc/hosts
 cat /etc/resolv.conf
 
 wget --spider --timeout=1 nginx
 dig naver.com
+```
 
-
-
-kubectl get pod --show-all | -a
-## single command exectuion
-## SErvice Name: svce_name or svc_name.{namespace}.svc.cluster.local
-## POD Name: {pod_name}.{namespace}.pod.cluster.local
-kubectl exec node-js-pod -- curl <node-js-intenal IP -- Cluster IP | Service Name | Pod IP>
-## shell execution
-kubectl exec -it node-js-pod sh
-
-##  rolling update --> 단계적으로 한개씩 변경 실행
+## Rolling Update Command
+###  rolling update --> 단계적으로 한개씩 변경 실행
+```
 kubectl scale --current-replicas=2 --replicas=3 rc node-js-scale
 kubectl rolling-update node-js-scale --image=jonbaier/pod-scaling:0.2 --update-priod="2m"
 kubectl rolling-update node-js-scale node-js-scale-v2.0 --image=jonbaier/pod-scaling:0.2 --update-period="30s"
-## rollout --> 버전을 그냥 교체하는 방법 (deployment rollout) - n개를 동시에 살리고 죽인다.
+```
+
+### rollout --> 버전을 그냥 교체하는 방법 (deployment rollout) - n개를 동시에 살리고 죽인다.
+```
 kubectl set image deployment node-js-deploy node-js-deploy=jonbaier/pod-scaling:0.2
 kubectl rollout status deployment node-js-deploy
 
 kubectl rollout history deployment node-js-deploy
-## rollout undo
+```
+
+### rollout undo
+```
 kubectl rollout undo deployment node-js-deploy
+```
 
-## pod autoscaling (HorizontalPodAutoscaler)
+### pod autoscaling (HorizontalPodAutoscaler)
+```
 kubectl get hpa  
+```
 
+### Kubectl Proxy
+```
+kubectl proxy
+curl http://localhost:8001
+```
 
-kubectl create -f node-js-deploy.yaml --record
+### curl based DNS call
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: curl
+spec:
+  containers:
+  - name: main
+    image: tutum/curl
+    command: ["sleep", "9999999"]
+    
+$ kubectl exec -it curl sh
+# curl https://kubernetes
+curl: (6) Could not resolve host: kubernetes
+# cd /var/run/secrets/kubernetes.io/serviceaccount
+# ls
+ca.crt	namespace  token
+    
+```
+
+### ServiceAcount-based internal Service call
+````
+> TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+> export CURL_CA_BUNDLE=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+> curl -H "Authorization: Bearer $TOKEN" https://10.0.0.1:443
+{
+  "paths": [
+    "/api",
+    "/api/v1",
+    "/apis",
+    "/apis/",
+    "/apis/admissionregistration.k8s.io",
+    "/apis/admissionregistration.k8s.io/v1alpha1",
+    "/apis/admissionregistration.k8s.io/v1beta1",
+    "/apis/apiextensions.k8s.io",
+    "/apis/apiextensions.k8s.io/v1beta1",
+    "/apis/apiregistration.k8s.io",
+    "/apis/apiregistration.k8s.io/v1",
+    "/apis/apiregistration.k8s.io/v1beta1",
+    "/apis/apps",
+    "/apis/apps/v1",
+    "/apis/apps/v1beta1",
+    "/apis/apps/v1beta2",
+    "/apis/authentication.k8s.io",
+    
+> NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+# curl -H "Authorization: Bearer $TOKEN" https://10.0.0.1:443/api/v1/namespaces/$NS/pods
+{
+  "kind": "PodList",
+  "apiVersion": "v1",
+  "metadata": {
+    "selfLink": "/api/v1/namespaces/default/pods",
+    "resourceVersion": "1069573"
+  },
+  "items": [
+    {
+      "metadata": {
+        "name": "curl",
+        "namespace": "default",
+        "selfLink": "/api/v1/namespaces/default/pods/curl",
+        "uid": "04303c44-1274-11e9-a6b2-fa163e26d271",
+        "resourceVersion": "1065904",
+        "creationTimestamp": "2019-01-07T12:01:50Z",
+        "annotations": {
+          "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"annotations\":{},\"name\":\"curl\",\"namespace\":\"default\"},\"spec\":{\"containers\":[{\"command\":[\"sleep\",\"9999999\"],\"image\":\"tutum/curl\",\"name\":\"main\"}]}}\n",
+          "kubernetes.io/psp": "ibm-privileged-psp"
+        }
+      },
+
+### 
 

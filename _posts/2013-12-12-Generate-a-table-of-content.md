@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Generate a table of content
+date: 2019-01-06
+categories: Markdown
+author: himang10
 tags: [toc.js, kramdown, Markdown, Customization]
 ---
 

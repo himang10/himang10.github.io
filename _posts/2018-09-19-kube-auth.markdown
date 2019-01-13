@@ -9,6 +9,14 @@ description: K8s의 Github와 연동하여 AuthN과 AuthZ 지원하기 위한 �
 ---
 
 # k8s AuthN and AuthZ 
+## Group
+사용자 및 serviceaccount는 모두 하나 이상의 그룹에 속한다. 인증 플러그인이 사용자 이름과 사용자 ID와 함게 그룹을 반환한다고 말했다.
+각각의 사용자에게 개별적으로 권한을 부여하는 대신 그룹은 그룹에 속한 사용자에게 한 번에 사용 권한을 부여하는 데 사용하나.
+플러그인에 의해 반환되는 그룹은 임의의 그룹 이름을 나타내는 문자열일 뿐이지만 시스템에서 제공하는 기본 그룹은 특별한 의미가 있다.
+* `system:unauthenticated` 그룹은 인증 플러그인이 어느 클라이언트도 인증할 수 없을 때 이 그룹에 소속
+* `system:authenticated`그룹은 성공적으로 인증된 사용자에게 자동으로 할당
+* `system:serviceaccount`그룹은 시스템의 모든 service account를 포함
+* `system:serviceaccount:{namespace}`는 특정 네임스페이스의 모든 서비스어카운트를 포함
 
 ## Role 과 RoleBinding에 대한 정의
 github의 TEAM을 이용하여 그룹 설정하고 github 인증을 통해 인증 및 접근 통제할 수 있도록 구성
@@ -64,15 +72,15 @@ Guard는 어떤 auth provider(git, ldap, google ...)을 identify하기 위해 cl
 [guard install page](https://appscode.com/products/guard/0.2.0/setup/install/)를 참조해서 진행하면된다.
 
 ```yaml
-# initialize self signed ca
+#initialize self signed ca
 $ guard init ca
 Wrote ca certificates in  /home/tamal/.guard/pki
 
-# generate server certificate pair
+#generate server certificate pair
 $ guard init server --ips=10.96.10.96
 Wrote server certificates in  /home/tamal/.guard/pki
 
-# generate client certificate pair for Github organization `appscode`
+#generate client certificate pair for Github organization `appscode`
 $ guard init client appscode -o github
 Wrote client certificates in  /home/tamal/.guard/pki
 
@@ -82,15 +90,15 @@ Wrote client certificates in  /home/tamal/.guard/pki
 $ guard init client qacode -o appscode
 Wrote client certificates in  /home/tamal/.guard/pki
 
-# generate client certificate pair for Gitlab
+#generate client certificate pair for Gitlab
 $ guard init client -o gitlab
 Wrote client certificates in  /home/tamal/.guard/pki
 
-# for azure, commonName is optional
+#for azure, commonName is optional
 $ guard init client -o azure
 Wrote client certificates in  /home/tamal/.guard/pki
 
-# generate client certificate pair for LDAP
+#generate client certificate pair for LDAP
 $ guard init client appscode -o ldap
 Wrote client certificates in  /home/tamal/.guard/pki
 
@@ -154,7 +162,7 @@ spec:
 기존 config는 admin용 credentials 가 포함되어 있음. 이를 Github TEAM에 설정된 팀원으로 인증할 수 있도록 변경할 것입니다.
 
 ```config
-# config
+#config
 apiVersion: v1
 clusters:
 - cluster:
@@ -230,7 +238,7 @@ github의 team으로 그루핑한다.
 아래의 yaml을 생성
 > $kubectl create -f admin-k8s-team-rb.yaml
 ```yaml
-# admin-k8s-team-rb.yaml
+#admin-k8s-team-rb.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -241,14 +249,14 @@ roleRef:
   name: cluster-admin
 subjects:
 - apiGroup: rbac.authorization.k8s.io
-  kind: Group # Group 이라고 지정함으로써 Github Team을 가르켰습니다.
-  name: admin-k8s # 대소문자를 구별함으로 주의해주세요
+  kind: Group #Group 이라고 지정함으로써 Github Team을 가르켰습니다.
+  name: admin-k8s #대소문자를 구별함으로 주의해주세요
 ```
 admin-k8s team은 group으로 설정되어 있으며, cluster-admin으로 바인딩됨
 그리고 `~/.kube/config` 파일에 `users:`에 추가
 ```
 users:
-- name: my-github-token  # 임의로 지정할 수 있으며, context와 일치해야 함
+- name: my-github-token  #임의로 지정할 수 있으며, context와 일치해야 함
   user:
     token: {github token value}
 ```
@@ -256,7 +264,7 @@ context 항목도 아래와 같이 변경하여 Github credential을 사용하�
 ```
 - context:
     cluster: my.cluster.k8s.local
-    user: my-github-token   # users에 등록된 이름이며, 위의 user와 일치해야 함
+    user: my-github-token   #users에 등록된 이름이며, 위의 user와 일치해야 함
 ```
 이렇게 설정 후 
 > $kubectl get nodes 실행 시 정상적으로 실행된다면 

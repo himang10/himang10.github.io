@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Markdown and HTML
+date: 2019-01-06
+categories: Markdown
+author: himang10
 tags: [Test, Markdown]
 ---
 

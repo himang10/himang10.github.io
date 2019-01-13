@@ -1,8 +1,10 @@
 ---
 layout: post
 title: Kubectl & helm Command
+date: 2019-01-06
+categories: Kubernetes
+author: himang10
 tags: [A Tag, kubectl, Lorem, Ipsum]
-excerpt_separator:
 ---
 
 #Kubectl CMD

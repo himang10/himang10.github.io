@@ -1,8 +1,10 @@
 ---
 layout: post
 title: DB Synch. Solution -  SharePlex and Alternatives
+date: 2019-01-06
+categories: Data
+author: himang10
 tags: [db sync, sharePlex, DR]
-excerpt_separator:
 ---
 
 ## [SharePlex](https://alternativeto.net/software/shareplex/) - commercial

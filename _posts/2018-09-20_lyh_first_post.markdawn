@@ -1,0 +1,37 @@
+---
+layout: post
+title: 설정하기
+date: 2019-09-20
+categories: kubernetes
+tags: [A kubernetes, group, team, role, rolebinding]
+author: himang10
+description: The read me page of jekyll-xixia.
+---
+
+임용훈, 첫 글 남김 신고~
+======================
+
+## 하고 싶은 말
+쿠버네티스 공부하면서 정리한 내용을 여기에 올리면 되는 것인가요?
+
+### 관심 부분
+- 데이터베이스 구성하고 사용하고
+- .차근차근 올려보겠습니다.
+- 부하 걸고, 모니터링 해보는 방법을 좀 익혀보고
+- 차근차근 공부하면서 내용을 여기에 정리하며 올려야 하나요~
+
+쉽지 않네요~ ㅎㅎ
+
+> 그래도
+> 마크다운으로 처음 문서를 만들었지만
+> 만들긴 만들었네요.
+
+글이 잘 올라가 있을까요?
+
+push 해 보겠습니다.
+
+
+
+
+
+
