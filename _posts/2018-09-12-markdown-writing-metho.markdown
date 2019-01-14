@@ -227,6 +227,7 @@ Link: [Google](https://google.com, "google link")
 <address@example.com>
 
 ## 2.7. 강조
+
 ```
 *single asterisks*
 _single underscores_
