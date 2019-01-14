@@ -11,10 +11,10 @@ ICP 3.1.1 Install Guide
 ============
 
 # Table of Contents
-[사전작업 all node](#사전작업-all-node)
-[사전작업-Boot](#configmap-entry-creation)
-[ICP Install](#ICP-Install)
-[설치 이슈](#설치-이슈)
+1. [사전작업 all node](#사전작업-all-node)
+2. [사전작업-Boot](#configmap-entry-creation)
+3. [ICP Install](#ICP-Install)
+4. [설치 이슈](#설치-이슈)
 
 
 
