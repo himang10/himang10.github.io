@@ -127,7 +127,7 @@ cpu.cfs_period_us      cpu.stat               cpuacct.usage_percpu
 2. Container에 대한 CPU & Memory QoS 
 
   CPU Req & Limit   | mem Req & Limit   | Container Class
-  -------------------------------------------------------
+  :----------------:|:-----------------:|:--------------:
   Non               | Non               | **BestEffort**
   Non               | Req < Limit       | **Burstable**
   Non               | Req = Limit       | **Burstable**
@@ -139,7 +139,7 @@ cpu.cfs_period_us      cpu.stat               cpuacct.usage_percpu
 3. Pod에 대한 QoS
 
   Conatiner 1 QoS   | Conatiner 2 QoS   | PoD QoS Class
-  -------------------------------------------------------
+  :----------------:|:-----------------:|:--------------:
   BestEffort        | BestEffort        | **BestEffort**
   BestEffort        | Burstable         | **Burstable**
   BestEffort        | Guranteed         | **Burstable**
