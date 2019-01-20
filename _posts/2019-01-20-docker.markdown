@@ -1,0 +1,105 @@
+---
+layout: post
+title: docker 설명
+date: 2019-01-06
+categories: Docker
+tags: [A kubernetes, docker]
+author: himang10
+description: Docker 설명자료
+---
+ConfigMap starting Guide
+============
+
+# Table of Contents
+1. [xxx](#xxx)
+2. [xxx](#xxx)
+3. [xxx](#xxx)
+
+## docker 
+```
+docker search cnetos
+docker pull centos
+docker images
+docker images --digest
+docker tag httpd:2.4 ywyi:1.0 # httpd.24를 새로운 ywyi:1.0으로 rename해서 생성
+```
+
+## docker search 
+ITEM | description
+-------------|--------------------------
+NAME | docker images 명
+DESCRIPTION | Docker images 설명
+STARTS | 해당 이미지가 받은 별 수
+OFFICAL | 공식 이미지 여부
+AUTOMATED | Dockerfile을 기반으로 자동 생성된 이미지 여부
+
+```
+docker search --stars=30 centos
+```
+## docker rmi
+OPTION   | 설명
+----------|---------------------
+-f, --force=false | 이미지 강제 삭제
+--no-prune=false | 태그가 없는 부모 이미지를 삭제하지 않음
+
+```
+docker rmi <option> <image name>
+```
+
+## docker login
+OPTION    | expain
+-----------|-------------------------
+-u, --username="" | user name
+-p, --password="" | password
+-e, --email="" | email
+```
+docker login <option> <servername>
+```
+
+## docker push
+```
+docker push <docker hub 사용자명/image name>:<tab name>
+```
+
+## docker create
+이미지로 container를 생성한다. 여기서 이미지는  docker에서 서버를 동작시키기 위하여 필요한 디렉토리 및 파일의 집합을 의미한다. 즉 리눅스 동작에 필요한 /etc와 /bin 등의 디렉토리 및 파일의 집합이다.
+docker create를 실행하면 이미지에 포함된 linux 디렉토리 및 파일 집합의 스냅샷을 만든다. 스냅샷이란 특정 시간에 스토리지 내부에 존재하는 파일과 디렉토리를 저장한 것을 의미한다.
+
+## docker run (생성 실행)
+option       | explain
+----------------|-----------------------------
+-a, --attach=[STDIN|STDOUT|STDERR] | 표준 입출력에러를 연결
+--cidfile="filename" | container ID를 파일로 출력
+-d, --detach=false | conatiner를 생성해서 backgroud를 실행
+-i, --interactive=false | conatiner 표준 입력 열기
+-t, --tty=false | ttyp를 사용
+--name | conatiner name
+-u, --user="username" | username을 입력
+--restart=[no | on-failuer | on-failuer:횟수n | always ]|
+--rm | command 실행 완료 후 컨테이너 자동 삭제
+
+## docker start (중지상태인 컨테이너 구동)
+## docker stop (중지)
+## docker rm (중지 docker 삭제)
+## docker ps
+## docker stat
+## docker pause/unpause
+## docker exec 
+## docker top
+## docker port <docker image name>
+## docker info
+## Docker Conatiner에서 image 생성 방법
+1. container에서 이미지 생성
+docker cimmit <option> <container name> <imagename:tagename>
+2. conatiner를 tar로 저장
+docker export <container name or id>
+
+3. tar 에서 이미지 생성 
+docker import <file 또는 URL> - <imagename:tag>
+
+4. docker image를 tar로 저장
+docker save -o export.tar mango
+
+5. tar를 image로 변환
+docker load -i export.tar
+
