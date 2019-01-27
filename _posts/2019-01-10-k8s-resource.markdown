@@ -145,7 +145,7 @@ cpu.cfs_period_us      cpu.stat               cpuacct.usage_percpu
   BestEffort        | Guranteed         | **Burstable**
   Burstable         | Burstable         | **Burstable**
   Burstable         | Guranteed         | **Burstable**
-  Guranteed         | Guranteed         | **Burstable**
+  Guranteed         | Guranteed         | **Guranteed**
 
 4. 동일한 QoS 클래스의 컨테이너 처리 방식
 동일 우선순위의 Pod는 OOM 점수를 비교하여 강제 종료 프로세스 선정
