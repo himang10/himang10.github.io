@@ -1,7 +1,7 @@
 ---
 layout: post
 title: docker 설명
-date: 2019-01-06
+date: 2019-01-20
 categories: Docker
 tags: [A kubernetes, docker]
 author: himang10
@@ -25,33 +25,34 @@ docker tag httpd:2.4 ywyi:1.0 # httpd.24를 새로운 ywyi:1.0으로 rename해�
 ```
 
 ## docker search 
-ITEM | description
+ITEM         | description
 -------------|--------------------------
-NAME | docker images 명
-DESCRIPTION | Docker images 설명
-STARTS | 해당 이미지가 받은 별 수
-OFFICAL | 공식 이미지 여부
-AUTOMATED | Dockerfile을 기반으로 자동 생성된 이미지 여부
+NAME         | docker images 명
+DESCRIPTION  | Docker images 설명
+STARTS       | 해당 이미지가 받은 별 수
+OFFICAL      | 공식 이미지 여부
+AUTOMATED    | Dockerfile을 기반으로 자동 생성된 이미지 여부
 
 ```
 docker search --stars=30 centos
 ```
 ## docker rmi
-OPTION   | 설명
-----------|---------------------
+OPTION            | 설명
+------------------|---------------------
 -f, --force=false | 이미지 강제 삭제
---no-prune=false | 태그가 없는 부모 이미지를 삭제하지 않음
+--no-prune=false  | 태그가 없는 부모 이미지를 삭제하지 않음
 
 ```
 docker rmi <option> <image name>
 ```
 
 ## docker login
-OPTION    | expain
------------|-------------------------
+OPTION            | expain
+------------------|-------------------------
 -u, --username="" | user name
 -p, --password="" | password
--e, --email="" | email
+-e, --email=""    | email
+
 ```
 docker login <option> <servername>
 ```
@@ -66,17 +67,18 @@ docker push <docker hub 사용자명/image name>:<tab name>
 docker create를 실행하면 이미지에 포함된 linux 디렉토리 및 파일 집합의 스냅샷을 만든다. 스냅샷이란 특정 시간에 스토리지 내부에 존재하는 파일과 디렉토리를 저장한 것을 의미한다.
 
 ## docker run (생성 실행)
-option       | explain
-----------------|-----------------------------
+option                             | explain
+-----------------------------------|-----------------------------
 -a, --attach=[STDIN|STDOUT|STDERR] | 표준 입출력에러를 연결
---cidfile="filename" | container ID를 파일로 출력
--d, --detach=false | conatiner를 생성해서 backgroud를 실행
--i, --interactive=false | conatiner 표준 입력 열기
--t, --tty=false | ttyp를 사용
---name | conatiner name
--u, --user="username" | username을 입력
---restart=[no | on-failuer | on-failuer:횟수n | always ]|
---rm | command 실행 완료 후 컨테이너 자동 삭제
+--cidfile="filename"               | container ID를 파일로 출력
+-d, --detach=false                 | conatiner를 생성해서 backgroud를 실행
+-i, --interactive=false            | conatiner 표준 입력 열기
+-t, --tty=false                    | ttyp를 사용
+--name                             | conatiner name
+-u, --user="username"              | username을 입력
+--restart=[no | on-failuer ]       |
+  [on-failuer:횟수n | always ]      |
+--rm                               | command 실행 완료 후 컨테이너 자동 삭제
 
 ## docker start (중지상태인 컨테이너 구동)
 ## docker stop (중지)
