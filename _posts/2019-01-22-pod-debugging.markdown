@@ -1,7 +1,7 @@
 ---
 layout: post
 title: POD 내 명령어 호출 방식
-date: 2019-01-06
+date: 2019-01-24
 categories: Kubernetes
 tags: [A kubernetes, POD, call]
 author: himang10
