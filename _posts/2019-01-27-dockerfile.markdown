@@ -359,4 +359,157 @@ CMD ["-d", "10"]
 
 docker run -it sample # top을 10초간격으로 업데이트
 docker run -it sample -d 2 # 2초 간격으로 업데이트
+````
+
+### ONBUIKD
+build 완료 후에 실행되는 명령
+공통의 도커 이미지를 생성하고 기본으로 시행해야 할 명령어를 ONBUILD로 설정해 놓으면
+이 생성된 이미지를 베이스로 해서 각자 도커 이미지를 생성하면 ONBUILD가 기본으로 삽입되어 실행될 수 있음
+```
+# based image confiugration
+FROM centos:latest
+
+# 생성자 정보
+MAINTAINER 0.1 himang10@gmail.com
+
+# STEP 01: Apache install
+RUN yum install -y httpd
+
+# STEP 02: copy file
+ONBUILD ADD index.html /var/www/html/
+
+#STEP 03: Apache run
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+```
+
+```
+$ docker build -t ywyi/web-images -f Dockerfile.onbuild .
+Sending build context to Docker daemon  11.78kB
+Step 1/5 : FROM centos:latest
+ ---> 1e1148e4cc2c
+Step 2/5 : MAINTAINER 0.1 himang10@gmail.com
+ ---> Using cache
+ ---> 01a970dcf5e1
+Step 3/5 : RUN yum install -y httpd
+```
+
+```
+# based image confiugration
+FROM ywyi/onbuild
+```
+```
+$ docker build -t ywyi/web-images -f Dockerfile.web-image .
+Sending build context to Docker daemon   12.8kB
+Step 1/1 : FROM ywyi/onbuild
+# Executing 1 build trigger
+ ---> Using cache
+ ---> 4fdd23092ed4
+Successfully built 4fdd23092ed4
+Successfully tagged ywyi/web-images:latest
+```
+
+* onbuild image 상세 확인
+```
+$ docker inspect --format="{{ .Config.OnBuild }}" ywyi/onbuild
+[ADD index.html /var/www/html/]
+```
+
+### 환경 변수 (ENV)
+* Key Value 형식
+```
+ENV myName "EUNWHA SHIN"
+ENV myOrder Gin Whisky Calvados
+ENV myNickName miya
+```
+
+* Key=Value 형식
+값에 공백이 포함될 때에는 ""나 \를 사용
+```
+ENV myName="EUNWHA SHIN" \
+ENV myOrder=Gin\ Whisk\ Calvados \
+ENV myNickName=miya
+```
+> 변수 앞에 \을 붙이면 escape 할 수 있음.
+> \$myName
+> docker run command의 env 옵션을 사용해 변경 용이한 구조
+
+### 작업디렉토리 설정 (WORKDIR)
+WORKDIR을 Dockerfile에 저장된 다음 명령을 실행하기 위한 작업 디렉토리를 설정함
+* RUN
+* CMD
+* ENTRYPOINT
+* COPY
+* ADD
+
+Dockerfile에 다음과 같이 설정 시 /first/second/third 가 출력된다
+```
+WORKDIR /first
+WORKDIR second
+WORKDIR third
+RUN ["pwd"]
+```
+
+다음과 같이 실행하면 마지막행이 실행된 두 /first/seoncd가 출력
+```
+ENV DIRPATH /first
+ENV DIRNAME second
+WORKDIR $DIRPATH/$DIRNAME
+RUN ["pwd"]
+````
+
+### 사용자 설정 (RUN)
+이미지 실행 또는 Dockerfile 내의 다음 명령어를 실행시ㅣㄹ 사용자를 설정할때에는 USER 명령엇 사용
+* RUN
+* CMD
+* ENTRYPOINT
+
+````
+USER Shin
+RUN ["whoami"]
+````
+
+### LABEL
+버전, 커멘트 정보를 이미지에 심을때 LABEL 명령을 사용
+```
+LABEL title="WebAPServerImage"
+LABEL version="1.0"
+LABEL description="This image is webapplicationserver \
+for JAvaEE"
+```
+```
+$ docker build -t ywyi/sample -f Dockerfile.web-base .
+Sending build context to Docker daemon   12.8kB
+Step 1/4 : FROM centos:centos7
+ ---> 1e1148e4cc2c
+Step 2/4 : LABEL title="WebAPServerImage"
+ ---> Running in 291637c5e72a
+Removing intermediate container 291637c5e72a
+ ---> 9576168441c8
+Step 3/4 : LABEL version="1.0"
+ ---> Running in e8c6acfafaee
+Removing intermediate container e8c6acfafaee
+ ---> f8a751733bbd
+Step 4/4 : LABEL description="This image is webapplicationserver for JAvaEE"
+ ---> Running in 2dcdd9dc1d68
+Removing intermediate container 2dcdd9dc1d68
+ ---> 53ad2e722f42
+Successfully built 53ad2e722f42
+Successfully tagged ywyi/sample:latest
+
+
+(⎈ |mycluster-context:default)SKCC18N00029:~ himang10 in ~/ywyi/docker/docker04
+$ docker inspect --format="{{ .Config.Labels }}" ywyi/sample
+map[org.label-schema.build-date:20181205 org.label-schema.license:GPLv2 org.label-schema.name:CentOS Base Image org.label-schema.schema-version:1.0 org.label-schema.vendor:CentOS title:WebAPServerImage version:1.0 description:This image is webapplicationserver for JAvaEE]
+```
+
+### EXPOSE
+컨테이너에 공개할 포트번호를 설정
+```
+EXPOSE 8080
+```
+
+
+
+
+
 
