@@ -266,6 +266,9 @@ IMAGE               CREATED             CREATED BY                              
 > EXEC를 사용하면 됨
 
 ### Daemon 실행 (CMD)
+이미지를 생성하기 위해 실행되는 커맨드는 RUN을 사용하고
+컨테이너에서 실행되는 커맨드는 CMD 명령어 사용
+그리고 한개의 CMD만을 사용할 수 있으며, 만약 여러개인 경우 마지막 커맨드만 적용
 ```
 # http 실행
 CMD /usr/sbin/httpd -D FOREGROUND
@@ -503,12 +506,101 @@ map[org.label-schema.build-date:20181205 org.label-schema.license:GPLv2 org.labe
 ```
 
 ### EXPOSE
-컨테이너에 공개할 포트번호를 설정
+컨테이너에 공개할 포트번호를 설정. 명시적으로 정보를 보여주는 의미.
+
 ```
 EXPOSE 8080
 ```
 
+### ADD
+이미지에 호스트의 파일과 디렉토리를 추가하기 위해서 ADD 사용
+```
+# ADD <호스트 파일 경로> <Docker 이미지 파일 경로>
+ADD host.html /docker_dir/
+```
+* WORKDIR과 ADD의 실행결과
+```
+WORKDIR /docker_dir
+ADD host.html web/
+ADD http://www.wings.msn.to/index.php web/
+````
+> 호스트 파일이 tar , gzip등의 압축파일인 경우에는 디렉토리로 풀린다.
+> 단 원격 URL인 경우에는 압축이 풀리지 않는다
 
+### 그외
+#### COPY
+```
+# COPY <호스트 파일 경로> <Docker 이미지 파일 경로>
+```
+
+#### VOLUME
+```
+# VOLUME <\>
+```
+* log image 생성
+```yaml
+# based image confiugration
+FROM centos:latest
+
+RUN mkdir /var/log/httpd
+VOLUME /var/log/httpd
+````
+
+* log image build
+````
+$ docker build -t ywyi/log-images -f Dockerfile.volume .
+Sending build context to Docker daemon  13.82kB
+Step 1/3 : FROM centos:latest
+ ---> 1e1148e4cc2c
+Step 2/3 : RUN mkdir /var/log/httpd
+ ---> Running in 2d0edb390cc1
+Removing intermediate container 2d0edb390cc1
+ ---> 3d10e294bfa0
+Step 3/3 : VOLUME /var/log/httpd
+ ---> Running in ceab7d1be219
+Removing intermediate container ceab7d1be219
+ ---> cc6abd22a4b6
+Successfully built cc6abd22a4b6
+Successfully tagged ywyi/log-images:latest
+````
+
+* 로그용 컨테이너 구동
+```
+$ docker run -it --name log-conatiner ywyi/log-images
+[root@e6442c475a5a /]# ls
+```
+
+* 웹 서버용 이미지 생성
+```
+# based image confiugration
+FROM centos:latest
+
+# STEP 01: Apache install
+RUN yum install -y httpd
+
+# STEP 02: copy file
+COPY index.html /var/www/html/
+
+#STEP 03: Apache run
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+```
+
+* 웹 서버용 컨테이너 구동
+구동시 volumes-from으로 기존 volume을 포함하고 있는 log-container를 설정
+```
+$ docker run -d --name web-container \
+→ -p 80:80 \
+→ --volumes-from log-container ywyi/web-images
+```
+
+
+* 로그 확인
+```
+$ docker start -ia log-conatiner
+[root@e6442c475a5a httpd]# tail -f access_log
+172.17.0.1 - - [29/Jan/2019:13:11:04 +0000] "GET / HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+172.17.0.1 - - [29/Jan/2019:13:11:04 +0000] "GET /img/icon.png HTTP/1.1" 404 210 "http://localhost/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+```
 
 
 

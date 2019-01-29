@@ -80,6 +80,29 @@ option                             | explain
   [on-failuer:횟수n | always ]      |
 --rm                               | command 실행 완료 후 컨테이너 자동 삭제
 
+## docker image 확인
+* docker pull
+```
+$ docker pull tricksterio/trickster
+Using default tag: latest
+latest: Pulling from tricksterio/trickster
+4fe2ade4980c: Pull complete
+766c22c9ba7f: Pull complete
+7da05b2f4f96: Pull complete
+849ca120f62a: Pull complete
+807994b31393: Pull complete
+Digest: sha256:1353ff8125a1429713ed8d8ec8d41989bab8ed52f9695cadb8835cb40dc0fd35
+Status: Downloaded newer image for tricksterio/trickster:latest
+```
+* docker inspect
+```
+ docker images tricksterio/trickster
+REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
+tricksterio/trickster   latest              d1113b31a8ca        2 weeks ago         47.5MB
+
+$ docker inspect --format="{{ .Author }}" tricksterio/trickster
+``
+
 ## docker start (중지상태인 컨테이너 구동)
 ## docker stop (중지)
 ## docker rm (중지 docker 삭제)
