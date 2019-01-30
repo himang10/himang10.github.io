@@ -82,3 +82,44 @@ kubectl run -it srvlookup --image=tutum/dnsutils --rm --restart=Never -- dig SRV
 kubectl run -it testifconfig --image=alpine --rm --restart=Never -- ifconfig
 kubectl run -it curtest --image=tutum/curl --rm --restart=Naver -- curl .... 
 ````
+
+## 프로세스 종료 원인 제공
+kubectl describe pod 내 Message에 종료 시 정의한 메시지를 포함시키는 방법
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: successful-pod-with-termination-message
+spec:
+  restartPolicy: OnFailure
+  containers:
+  - image: busybox
+    name: main
+    command:
+    - sh
+    - -c
+    - 'echo "I''ve completed my task" > /var/termination-reason ; exit 0'
+    *terminationMessagePath*: /var/termination-reason
+```
+```
+    State:       Waiting
+      Reason:    CrashLoopBackOff
+    Last State:  Terminated
+      Reason:    Error
+      Message:   I've completed my task
+```
+
+## Application Log handing
+컨테이너가 크래쉬되고 새 컨테이너로 교체되면 새 컨테이너의 로그가 표신된다. 이전 컨테이너의 로그를 보려면 
+```
+kubectl logs pod -c conatiner --previous
+````
+
+````
+kubectl exec <pod> cat <logfile>
+# pod의 foo.log을 로컬로 복사
+kubectl cp foo-pod:/var/log/foo.log foo.log
+
+# local file을 pod에 복사
+kubectl cp localfile foo-pod:/etc/remotefile | foo-pod:/etc/
+````

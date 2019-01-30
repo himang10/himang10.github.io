@@ -1,0 +1,87 @@
+---
+layout: post
+title: ICP openldap 연결
+date: 2019-01-30
+categories: Data
+author: himang10
+tags: [ldap, security]
+description: Configmap 사용을 위한 설명
+---
+ICP를 위한 openladp 설치
+=====================
+
+### 사전 작업
+openldap 및 phpldapadmin 이미지를 registry에 등록
+
+```
+git clone http://github.com/ibm-cloud-architecture/icp-openldap.git
+mv icp-openldap ldap
+
+cd openldap
+```
+
+vi values.yaml
+```yaml
+OpenLdap:
+  Image: "cnpstg.skhynix.com:8500/default/osixia/openldap
+  ImageTag: "1.1.10"
+  ImagePullPolicy: "Always"
+  Component: "oepnldap"
+  
+  Replicas: 1
+  
+  Cpu: "512m"
+  Memory: "200Mi"
+  
+  Domain: "local.io"
+  AdminPassword: "admin"
+  Https: "false"
+  SeedUsers:
+    usergroup": "icpusers"
+    userlist: "user1, user2, user3, user4"
+    initalPassword: "ChangeMe"
+    
+ PhpLdapAdmin:
+   Image: .../default/osixia/phpldapadmin"
+   ImageTag: "latest"
+   ImagePullPolicy: "Always"
+   Component: "phpadmin"
+   
+   Replicas: 1
+   
+   NodePort: 31080
+   
+   cpu:
+   Memory
+ ```
+ 
+ * icp openldap packaging
+ ```
+ cd ..
+ helm package openldap
+ ````
+
+* load chart
+```
+ cloudctl login -a https://masternode:8443 --skip-ssl-validation
+ cloudctl load-helm-chart  --archive openldap-0.1.5.tgz
+```
+
+### 생성
+
+* 생성 시 configuration 정보
+release name              | ldap
+:------------------------:|:--------------------------:
+target namespace 	      |default
+SeedUsers.usergroup	      |zcpusers
+SeedUsers.userlist        |master
+SeedUsers.initialPassword |	1234
+Image		              |cnpstg.skhynix.com:8500/default/phpldapadmin
+
+* 접속정보
+URL   : 	https://phpldapadmin.cnpstg.skhynix.com
+Login : DN/ password cn=admin,dc=local,dc=io / admin
+
+configmap
+ldap-seedusers
+ 
