@@ -11,6 +11,7 @@ ICP를 위한 openladp 설치
 =====================
 
 ### 사전 작업
+
 openldap 및 phpldapadmin 이미지를 registry에 등록
 
 ```
@@ -21,6 +22,7 @@ cd openldap
 ```
 
 vi values.yaml
+
 ```yaml
 OpenLdap:
   Image: "cnpstg.skhynix.com:8500/default/osixia/openldap
@@ -56,12 +58,14 @@ OpenLdap:
  ```
  
  * icp openldap packaging
+ 
  ```
  cd ..
  helm package openldap
  ````
 
 * load chart
+
 ```
  cloudctl login -a https://masternode:8443 --skip-ssl-validation
  cloudctl load-helm-chart  --archive openldap-0.1.5.tgz
@@ -70,18 +74,19 @@ OpenLdap:
 ### 생성
 
 * 생성 시 configuration 정보
-release name              | ldap
-:------------------------:|:--------------------------:
-target namespace 	      |default
-SeedUsers.usergroup	      |zcpusers
-SeedUsers.userlist        |master
-SeedUsers.initialPassword |	1234
-Image		              |cnpstg.skhynix.com:8500/default/phpldapadmin
+
+release name                 | ldap
+-----------------------------|-----------------------------------------------
+target namespace 	         | default
+SeedUsers.usergroup	         | zcpusers
+SeedUsers.userlist           | master
+SeedUsers.initialPassword    | 1234
+Image		                 | cnpstg.skhynix.com:8500/default/phpldapadmin
 
 * 접속정보
-URL   : 	https://phpldapadmin.cnpstg.skhynix.com
-Login : DN/ password cn=admin,dc=local,dc=io / admin
+> URL   : https://phpldapadmin.cnpstg.skhynix.com
+> Login : DN/ password cn=admin,dc=local,dc=io / admin
 
 configmap
-ldap-seedusers
+> ldap-seedusers
  

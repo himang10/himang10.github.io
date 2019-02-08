@@ -161,4 +161,23 @@ Kubectl get nodes -o jsonpath=‘{.item[*].status.address[?(type==“ExternalIP�
 ## port-forward
 ```
 kubectl port-forward forune 8080:80
+```
+
+## custum-colums
+> -o custom-column 옵션을 통해 커스텀 컬럼을 표시하고 --sort-by를 통해 리소스 목록을 정렬하도록 kubectl에게 명령할 수 있음
+```
+$ kubectl get po -o custom-columns=POD:metadata.name,NODE:spec.nodeName --sort-by spec.nodeName -n kube-system
+POD                                                            NODE
+calico-node-r2766                                              10.100.1.6
+nvidia-device-plugin-d6pd6                                     10.100.1.6
+monitoring-prometheus-nodeexporter-7jbt6                       10.100.1.6
+metering-reader-d85cr                                          10.100.1.6
+logging-elk-filebeat-ds-z4f8c                                  10.100.1.6
+k8s-proxy-10.100.1.6                                           10.100.1.6
+audit-logging-fluentd-ds-c9lrs                                 10.100.1.6
+calico-node-rjvj8                                              10.100.1.8
+calico-kube-controllers-d775694f-9dtpx                         10.100.1.8
+catalog-ui-864sf                                               10.100.1.8
+custom-metrics-adapter-858d46499-h554t                         10.100.1.8
+default-backend-68c6fdb9fd-v9mr2                               10.100.1.8
 ``

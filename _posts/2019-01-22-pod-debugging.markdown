@@ -37,6 +37,19 @@ curl localhost:8001/api/v1/namespaces/<namespace name>/pods/<podname>/proxy/<pat
 curl localhost:8001/api/v1/namespaces/<namespace name>/services/<servicename>/proxy/<path>
 ```
 
+4. api server를 통해 클러스터 내부의 서비스에 연결 방법
+서비스에 대한 프록시 요청 URI 경로는 다음과 같이 구성된다.
+> /api/v1/namespaces/<namespace>/services/<service name>/proxy/<path url in pod>
+    
+```
+$kubectl proxy
+Starting to server on 127.0.0.1:8001
+
+$curl localhost:8001/api/v1/namespaces/default/services/kubia-public/proxy/
+your're hit kubia-1
+data stored on this pod: No data posted yet
+````
+
 ## docker를 실제 run해서 내부에서 실행하는 방식
 명령어를 포함하는 docker image를 직접 실행하여 명령 실행 하는 방식
 ```
