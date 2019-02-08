@@ -11,6 +11,7 @@ ICP를 위한 openladp 설치
 =====================
 
 ### 사전 작업
+cloudctl 설치 [install](https://www.ibm.com/support/knowledgecenter/ko/SSBS6K_3.1.0/manage_cluster/install_cli.html)
 
 openldap 및 phpldapadmin 이미지를 registry에 등록
 
@@ -68,7 +69,7 @@ OpenLdap:
 
 ```
  cloudctl login -a https://masternode:8443 --skip-ssl-validation
- cloudctl load-helm-chart  --archive openldap-0.1.5.tgz
+ cloudctl catalog load-helm-chart  --archive openldap-0.1.5.tgz
 ```
 
 ### 생성
