@@ -22,21 +22,22 @@ docker images --digest
 docker tag httpd:2.4 ywyi:1.0 # httpd.24를 새로운 ywyi:1.0으로 rename해서 생성
 ```
 
-## docker search 
-ITEM         | description
--------------|--------------------------
-NAME         | docker images 명
-DESCRIPTION  | Docker images 설명
-STARTS       | 해당 이미지가 받은 별 수
-OFFICAL      | 공식 이미지 여부
-AUTOMATED    | Dockerfile을 기반으로 자동 생성된 이미지 여부
+## docker search
+
+ITEM          | description
+------------- | ----------------------------------------------
+NAME          | docker images 명
+DESCRIPTION   | Docker images 설명
+STARTS        | 해당 이미지가 받은 별 수
+OFFICAL       | 공식 이미지 여부
+AUTOMATED     | Dockerfile을 기반으로 자동 생성된 이미지 여부
 
 ```
 docker search --stars=30 centos
 ```
 ## docker rmi
 OPTION            | 설명
-------------------|---------------------
+------------------|-----------------------------------------
 -f, --force=false | 이미지 강제 삭제
 --no-prune=false  | 태그가 없는 부모 이미지를 삭제하지 않음
 
