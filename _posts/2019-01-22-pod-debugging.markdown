@@ -17,18 +17,15 @@ tags: [kubernetes, POD, call]
 ### Pod 내 서비스 호출 방식
 
 1. kubectrl proxy
-
 ```
 kubectl proxy
 ```
-
 2. port-forward
 ```
 kubectl port-forward pods/redis-master-765d459796-258hz 6379:6379
 kubectl port-forward deployment/redis-master 6379:6379 
 kubectl port-forward svc/redis-master 6379:6379
 ```
-
 
 3. api server 호출 방식
 api server를 통해 직접 pod나 서비스를 호출하는 방법
@@ -51,7 +48,6 @@ data stored on this pod: No data posted yet
 
 ## docker를 실제 run해서 내부에서 실행하는 방식
 명령어를 포함하는 docker image를 직접 실행하여 명령 실행 하는 방식
-
 ```
 $ docker search tutum
 NAME                      DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
