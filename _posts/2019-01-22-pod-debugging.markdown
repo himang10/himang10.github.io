@@ -17,6 +17,7 @@ tags: [kubernetes, POD, call]
 ### Pod 내 서비스 호출 방식
 
 1. kubectrl proxy
+
 ```
 kubectl proxy
 ```
@@ -39,7 +40,6 @@ curl localhost:8001/api/v1/namespaces/<namespace name>/services/<servicename>/pr
 4. api server를 통해 클러스터 내부의 서비스에 연결 방법
 서비스에 대한 프록시 요청 URI 경로는 다음과 같이 구성된다.
 > /api/v1/namespaces/<namespace>/services/<service name>/proxy/<path url in pod>
-
 ```
 $kubectl proxy
 Starting to server on 127.0.0.1:8001
