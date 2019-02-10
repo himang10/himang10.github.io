@@ -2,13 +2,12 @@
 layout: post
 title: DB Synch. Solution: SharePlex and Alternatives
 date: 2019-09-19
-categories: Data
+categories: data
 tags: [db sync, sharePlex, DR]
 author: himang10
 description: Database Replication Solution에 대한 설명
 ---
-xxx
-============
+
 
 ## [SharePlex](https://alternativeto.net/software/shareplex/) - commercial
 ***Heterogenous Data Replication. Created by Quest Software***
@@ -34,6 +33,7 @@ SharePlex는 다음 플랫폼에 대한 replication을 지원한다.
 ***SymmetricDS는 비동기 데이터베이스 복제 소프트웨어 패키지***이며 Open Source.
 
 SymmetricDS는 여러 subscriber와 양방향 동기화를 지원하는 비동기 데이터베이스 복제 소프트웨어 패키지입니다. 웹 및 데이터베이스 기술을 사용하여 거의 실시간으로 관계형 데이터베이스간에 테이블을 복제합니다. 이 소프트웨어는 많은 수의 데이터베이스에 맞게 확장되고 낮은 대역폭 연결에서도 작동하며 네트워크 중단 시에도 작동할 수 있도록 설계되었습니다. 
+
 ### 지원 OS
 * MAC
 * Windows

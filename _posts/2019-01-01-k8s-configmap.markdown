@@ -2,20 +2,18 @@
 layout: post
 title: k8s에서 configmap resource 생성 및 사용 방법 가이드
 date: 2019-01-06
-categories: Kubernetes
-tags: [A kubernetes, configmap]
+categories: kubernetes
+tags: [kubernetes, configmap]
 author: himang10
 description: Configmap 사용을 위한 설명
 ---
-ConfigMap 사용
-============
 
-# Table of Contents
+### Table of Contents
 1. [command line에서 configmap 생성](#command-line에서-configmap-생성)
 2. [configmap entry creation](#configmap-entry-creation)
 3. [디렉토리 마운트 시 기존 디렉토리 파일을숨기지 않고 개별 configmap 엔트리로 마운트 방법](#configmap-entry-mount)
 
-### configmap 전체 옵션 구조
+#### configmap 전체 옵션 구조
 -----
 ```
 $ kubectl create configmap my-config
@@ -25,15 +23,15 @@ $ kubectl create configmap my-config
    --from-literal=some=thing.     # 리터럴 값
 ```
 
-### command line에서 configmap 생성
+#### command line에서 configmap 생성
 <hr/>
 ```
 $ kubectl create configmap myconfigmap --from-literal=foo=bar --from-literal=bar=baz
 ```
 
-### configmap entry creation
+#### configmap entry creation
 <hr/>
-```
+```yaml
 $ cat my-nginx-config.conf
 server {
     listen              80;
@@ -110,7 +108,8 @@ metadata:
 
 ### 디렉토리에 있는 파일로 부터 configmap 만들기
 <hr/>
-```
+
+```cmd
 $ ls
 Dockerfile     fortuneloop.sh
 
@@ -155,7 +154,9 @@ metadata:
   uid: 717f6751-1158-11e9-a6b2-fa163e26d271
 ```
 ### container의 환경변수로 configmap 엔트리 전달하기
+
 <hr/>
+
 {% highlight linux %}
 fortune-pod-env-configmap.yaml
 - valueFrom: 환경 변수 INTERVAL은 configmap.fortune-config.sleep-interval로 부터 왔다는 것을 정의
@@ -201,6 +202,7 @@ spec:
 
 
 *** configmap 항목을 명령행 인자로 전달 ***
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -233,8 +235,10 @@ spec:
   - name: html
     emptyDir: {}
 ```
+
 ### configmap volume을 이용하여 configmap 엔트리를 파일로 노출
 <hr/>
+
 ```yaml
 $ kubectl create configmap fortune-config --from-file=configmap-files/
 configmap "fortune-config" created
@@ -270,6 +274,7 @@ metadata:
 container web-server는 /etc/nginx/conf.d --> volume mount해서 볼 수 있도록 설정
 
 *** volume에 configmap을 conf.d의 volumemount실행 ***
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -322,6 +327,7 @@ sleep-interval
 
 ### 개별 항목(파일)을 지정할 때 항목의 키와 함께 개별 항목의 파일 이름을 설정해야 함.
 <hr/>
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -359,6 +365,7 @@ spec:
 ### configmap entry mount
 #### (파일 마운트) 디렉토리 마운트 시 기존 디렉토리 파일을숨기지 않고 개별 configmap 엔트리로 마운트 방법
 <hr/>
+
 ```yaml
 configmap:app-config
 * myconfig.conf

@@ -2,13 +2,11 @@
 layout: post
 title: docker 설명
 date: 2019-01-20
-categories: Docker
-tags: [A kubernetes, docker]
+categories: docker
+tags: [kubernetes, docker]
 author: himang10
 description: Docker 설명자료
 ---
-ConfigMap starting Guide
-============
 
 # Table of Contents
 1. [xxx](#xxx)

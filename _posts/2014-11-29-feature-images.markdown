@@ -2,7 +2,7 @@
 layout: post
 title: Feature images
 date: 2019-01-06
-categories: Markdown
+categories: markdown
 author: himang10
 feature-img: "assets/img/pexels/desk-messy.jpeg"
 thumbnail: "assets/img/thumbnails/desk-messy.jpeg"

@@ -2,13 +2,11 @@
 layout: post
 title: ICP Install Guide
 date: 2019-01-08
-categories: Kubernetes
-tags: [A kubernetes, icp, install]
+categories: kubernetes
+tags: [kubernetes, icp, install]
 author: himang10
 description: ICP 3.1.1 install guide
 ---
-ICP 3.1.1 Install Guide
-============
 
 # Table of Contents
 1. [사전작업 all node](#사전작업-all-node)

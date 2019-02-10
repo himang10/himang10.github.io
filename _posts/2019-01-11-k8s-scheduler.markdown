@@ -2,13 +2,11 @@
 layout: post
 title: k8s에서 고급 스케쥴링 (Taint & Affinity)
 date: 2019-01-06
-categories: Kubernetes
-tags: [A kubernetes, taint, affinity]
+categories: kubernetes
+tags: [kubernetes, taint, affinity]
 author: himang10
 description: 고급 스케쥴링
 ---
-고급 스케쥴링
-============
 
 ## Table of Contents
 1. [개요](#개요)

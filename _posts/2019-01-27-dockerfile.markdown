@@ -2,13 +2,11 @@
 layout: post
 title: Docker file 작성 방법
 date: 2019-01-06
-categories: Docker
-tags: [A kubernetes, dockerfile]
+categories: docker
+tags: [kubernetes, dockerfile]
 author: himang10
 description: Configmap 사용을 위한 설명
 ---
-Docker File 
-============
 
 # Table of Contents
 1. [xxx](#xxx)

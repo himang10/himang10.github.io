@@ -1,15 +1,12 @@
 ---
 layout: post
-title: Kubernetes Group Rolebinding
+title: Authz & AuthN
 date: 2019-01-06
-categories: Kubernetes
+categories: kubernetes
 author: himang10
 date: 2019-09-19
-tags: [A kubernetes, group, team, role, rolebinding]
+tags: [kubernetes, group, team, role, rolebinding]
 ---
-
-Authz & Authn
-============
 
 ## Summary
 k8s에서는 namespace에 대한 serviceaccount 할당은 가능하나 user 또는 group은 자체적으로 지원하지 않습니다.

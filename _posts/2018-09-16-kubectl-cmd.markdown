@@ -2,8 +2,8 @@
 layout: post
 title: Kubctl 명령어
 date: 2019-09-12
-categories: Kubernetes
-tags: [A Tag, kubectl, Lorem, Ipsum]
+categories: kubernetes
+tags: [tag, kubectl, lorem, ipsum]
 author: himang10
 description: Kubernetes 관련 명령어 set 설명
 ---

@@ -2,13 +2,11 @@
 layout: post
 title: k8s Resource Policy 
 date: 2019-01-06
-categories: Kubernetes
-tags: [A kubernetes, resource, quota]
+categories: kubernetes
+tags: [kubernetes, resource, quota]
 author: himang10
 description: Resource Quota
 ---
-Resource Quota
-============
 
 # Table of Contents
 1. [Pod가 Node에서 실행 시 Scheduling 결정 방법](#Pod가-Node에서-실행-시-Scheduling-결정-방법)

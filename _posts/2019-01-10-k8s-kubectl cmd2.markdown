@@ -2,11 +2,12 @@
 layout: post
 title: Kubctl 명령어 2
 date: 2019-09-12
-categories: Kubernetes
-tags: [A Tag, kubectl, Lorem, Ipsum]
+categories: kubernetes
+tags: [tag, kubectl, Lorem, Ipsum]
 author: himang10
 description: Kubernetes 관련 명령어 set 설명 두번째
 ---
+
 # Table of Contents
 1. [Kubectl 인증](#Kubectl-인증)
 1. [환경변수로 적용](#환경변수로-적용)

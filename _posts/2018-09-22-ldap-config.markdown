@@ -2,7 +2,7 @@
 layout: post
 title: openldap configuration
 date: 2019-09-19
-categories: Data
+categories: data
 author: himang10
 tags: [ldap, security]
 ---

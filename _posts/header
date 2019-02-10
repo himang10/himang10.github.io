@@ -1,14 +1,13 @@
 ---
 layout: post
-title: k8s에서 configmap resource 생성 및 사용 방법 가이드
+title: Feature images
 date: 2019-01-06
-categories: Kubernetes
-tags: [A kubernetes, configmap]
+categories: kubernetes
 author: himang10
-description: Configmap 사용을 위한 설명
+feature-img: "assets/img/pexels/desk-messy.jpeg"
+thumbnail: "assets/img/thumbnails/desk-messy.jpeg"
+tags: [Test, Lorem]
 ---
-ConfigMap 사용
-============
 
 # Table of Contents
 1. [xxx](#xxx)

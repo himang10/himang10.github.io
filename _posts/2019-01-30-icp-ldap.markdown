@@ -2,13 +2,11 @@
 layout: post
 title: ICP openldap 연결
 date: 2019-01-30
-categories: Data
+categories: data
 author: himang10
 tags: [ldap, security]
 description: Configmap 사용을 위한 설명
 ---
-ICP를 위한 openladp 설치
-=====================
 
 ### 사전 작업
 cloudctl 설치 [install](https://www.ibm.com/support/knowledgecenter/ko/SSBS6K_3.1.0/manage_cluster/install_cli.html)

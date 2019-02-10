@@ -1,19 +1,17 @@
 ---
 layout: post
-title: how to install and test LDAP
+title: Kubernetes LDAP Install and Test
 date: 2019-09-19
-categories: Data
+categories: data
 tags: [LDAP, ldap, apache directory studio]
 author: himang10
 ---
 
 
-Kubernetes LDAP Install and Test
-================================
-
 ## helm value.yaml 변경
 
-## templates/deployment.yaml 변경
+### templates/deployment.yaml 변경
+
 deployment.yaml에서 name:data의 mountPath:/var/lib ...로 되어있어서 
 disk write permission 발생
 이것을 /home/ldap으로 변경하여 해결
@@ -21,23 +19,23 @@ disk write permission 발생
 `또는 Pod Root permission을 할당받아야 하는 것인지도...`
 
 그리고 정상적으로 수행하는지를 확인하기 위해 
-``
+```cmd
 $kubectl get secret --namespace devywyi myldap-openldap -o jsonpath="{.data.LDAP_ADMIN_PASSWORD}" | base64 --decode; echo
 --> admin
 $kubectl get pod 
 NAME                               READY     STATUS    RESTARTS   AGE
 myldap-openldap-54c56c977f-2555t   1/1       Running   0          11h
 node-js-pod                        1/1       Running   3          9d
-``
-``
+```
+
+```cmd
 $kubectl port-forward myldap-openldap-54c56c977f-2555t 30011:389
 Forwarding from 127.0.0.1:30011 -> 389
 Handling connection for 30011
-...
-``
+```
 
 다른 창에서 
-``
+```cmd
 $ldapsearch -x -H ldap://localhost:30011 -b dc=example,dc=org -D "cn=admin,dc=example,dc=org" -w admin
 # extended LDIF
 #
@@ -69,15 +67,17 @@ result: 0 Success
 
 # numResponses: 3
 # numEntries: 2
-``
+```
 
-# Apache Directory Studio 사용방법
+### Apache Directory Studio 사용방법
+
 [Apache Directory Studio](https://directory.apache.org/studio/)에서 프로그램을 다운받아서 설치한다.
 설치 후 studio 실행
+
 ## LDAP 연결
 ***Kubernetes에서 ldap은 ClusterIP로 실행되고 있으므로 직접 연결하기 위해서는 port-forward로 설정***해야 한다
 
-1. 왼쪽의 + 창에서 왼쪽 마우스를 클릭하여 `LDAP Connection을 선택한다.
+1. 왼쪽의 + 창에서 왼쪽 마우스를 클릭하여 `LDAP Connection을 선택한다.`
 2. Network Parameter window에 파라메터를 설정
    * connection name: myldap name
    * Hostname: localhost (port-forward했을 경우)
@@ -93,6 +93,7 @@ result: 0 Success
 7. finish하면 성공
 
 ## 조직구분(Organization Units: tenancy), 그룹(group), 사용자(Users) 등록
+
 1. domain(dc=example,dc=org)에서 오른쪽 마우스를 클릭해서 New Entry 선택
 2. availability object classess에서 `organizational unit`선택
 3. ou값을 groups로 선택하여 생성

@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "Jangguy test!!"
-categories: Other
-tags: Other
+categories: other
+tags: other
 author: Xixia
 description: The read me page of jekyll-xixia.
 ---

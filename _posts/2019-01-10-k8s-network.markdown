@@ -2,13 +2,11 @@
 layout: post
 title: k8s의 네트워크 
 date: 2019-01-06
-categories: Kubernetes
-tags: [A kubernetes, network]
+categories: kubernetes
+tags: [kubernetes, network]
 author: himang10
 description: Kubernetes Network Acess
 ---
-Network
-============
 
 
 ## 동일 namespace 내 Pod간 접근 차단 정책

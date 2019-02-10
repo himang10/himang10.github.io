@@ -2,8 +2,8 @@
 layout: post
 title: K8s Client 사용을 위한 Client Library
 date: 2019-01-07
-categories: Kubernetes
-tags: [A kubernetes, client, library]
+categories: kubernetes
+tags: [kubernetes, client, library]
 author: himang10
 description: k8s client library개발을 위한 정보
 ---

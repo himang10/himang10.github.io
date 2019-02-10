@@ -2,8 +2,8 @@
 layout: post
 title: Pod Security Policy 변경 방법
 date: 2019-01-06
-categories: Kubernetes
-tags: [A kubernetes, psp, Pod, Security, Policy]
+categories: kubernetes
+tags: [kubernetes, psp, Pod, Security, Policy]
 author: himang10
 description: Pod Security Policy 변경 방법
 ---

@@ -2,14 +2,14 @@
 layout: post
 title: How to create an AuthZ Group in kubernetes
 date: 2019-09-19
-categories: Kubernetes
-tags: [A kubernetes, group, team, role, rolebinding]
+categories: kubernetes
+tags: [kubernetes, group, team, role, rolebinding]
 author: himang10
 description: K8s의 Github와 연동하여 AuthN과 AuthZ 지원하기 위한 방번 섦영
 ---
 
-# k8s AuthN and AuthZ 
 ## Group
+
 사용자 및 serviceaccount는 모두 하나 이상의 그룹에 속한다. 인증 플러그인이 사용자 이름과 사용자 ID와 함게 그룹을 반환한다고 말했다.
 각각의 사용자에게 개별적으로 권한을 부여하는 대신 그룹은 그룹에 속한 사용자에게 한 번에 사용 권한을 부여하는 데 사용하나.
 플러그인에 의해 반환되는 그룹은 임의의 그룹 이름을 나타내는 문자열일 뿐이지만 시스템에서 제공하는 기본 그룹은 특별한 의미가 있다.
@@ -19,10 +19,12 @@ description: K8s의 Github와 연동하여 AuthN과 AuthZ 지원하기 위한 �
 * `system:serviceaccount:{namespace}`는 특정 네임스페이스의 모든 서비스어카운트를 포함
 
 ## Role 과 RoleBinding에 대한 정의
+
 github의 TEAM을 이용하여 그룹 설정하고 github 인증을 통해 인증 및 접근 통제할 수 있도록 구성
 본 문서에서는 [appscode/guard](https://github.com/appscode/guard)을 이용하여 github와 연결하기로 한다
 
 #### Role
+
 Role은 API/Resource별 권한을 설정하는 리소스
 ```yaml
 kind: Role
@@ -41,6 +43,7 @@ role 검색
 > $kubectl get role my-role -n my-namespace -o ymal
 
 #### Role Binding
+
 Jane이라는 User에게 pod-reader ROLE을 binding하는 객체
 
 ```yaml
@@ -58,8 +61,8 @@ roleRef:
   name: pod-reader # 실제 존재하는 역할과 매치되어야 합니다.
   apiGroup: rbac.authorization.k8s.io
 ```
-# AuthN
-## cluster-admin 권한 할당 
+
+### cluster-admin 권한 할당 
 #### 전제조건: Gibhub TEAM 생성하기
 [appscode/guard](https://github.com/appscode/guard)를 우선 설치한다.
 
@@ -121,6 +124,7 @@ total 32
 -rwxr-xr-- 1 tamal tamal 1046 Aug 28 07:12 server.crt
 -rw------- 1 tamal tamal 1675 Aug 28 07:12 server.key
 ```
+
 ##### Client용 인증서
 > guard init client your-org -o github
 여기에서 your-org는 사용하고자 하는 org name으로 변경 해야 함. ex) Rainist
@@ -135,7 +139,9 @@ total 32
 * server.crt
 * server.key
 ```
+
 ##### 인증서를 이용하여 서버 띄위기
+
 먼저 서버 띄우기 위해 
 > $ guard get installer --auth-providers=github > installer.yaml
 > #installer.yaml 의 spec.clusterIP 의 값을 100.64.10.96 (서버 IP)으로 변경 후
@@ -143,7 +149,6 @@ total 32
 
 ##### k8s가 webhook 인증방식을 사용할 수 있도록 설정 변경
 kubeadm을 이용하여 config 설정 변경
-
 ```yaml
 spec:
   kubeAPIServer:
@@ -156,11 +161,11 @@ spec:
     roles:
     - Master
 ```
+
 설정 변경 후 master node를 재시작해야 함
 
 ##### kubectl config 파일을 수정하여 gibhub team을 이용하여 Authn 실행
 기존 config는 admin용 credentials 가 포함되어 있음. 이를 Github TEAM에 설정된 팀원으로 인증할 수 있도록 변경할 것입니다.
-
 ```config
 #config
 apiVersion: v1
@@ -182,6 +187,7 @@ users:
   user:
     token: {github-token}
 ```
+
 * `users.name`은 임의로 이름을 정하고 `contexts.context.user`와 동일하게 정의
 * ***token***은 https://github.com/settings/tokens/new 에 접속하여 
   > select scope
@@ -194,15 +200,11 @@ users:
 실행을 통해 에러 메시지가 없으면 성공한 것이다.
 
 
-## AuthZ 관리
 ### github team (admin-k8s)와 cluster-admin binding 하기
 https://github.com/orgs/{my-org}/new-team에 접속하여 새로운 팀을 만들어준다.
 여기서는 ***admin-k8s***로 설정한다.
 ##### Team 만드는 방법
 
-```
-
-```
 cluster-admin은 cluster 내 모든 것을 할 수 있는 권한 할당 의미
 > $kubectl get clusterrole cluster-admin -o yaml
 
@@ -232,11 +234,13 @@ rules:
   verbs:
   - '*'
 ```
+
 Cluster-admin ClusterRole에 ClusterRoleBinding을 실행
 github의 team으로 그루핑한다.
 
 아래의 yaml을 생성
 > $kubectl create -f admin-k8s-team-rb.yaml
+
 ```yaml
 #admin-k8s-team-rb.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -252,20 +256,25 @@ subjects:
   kind: Group #Group 이라고 지정함으로써 Github Team을 가르켰습니다.
   name: admin-k8s #대소문자를 구별함으로 주의해주세요
 ```
+
 admin-k8s team은 group으로 설정되어 있으며, cluster-admin으로 바인딩됨
 그리고 `~/.kube/config` 파일에 `users:`에 추가
+
 ```
 users:
 - name: my-github-token  #임의로 지정할 수 있으며, context와 일치해야 함
   user:
     token: {github token value}
 ```
+
 context 항목도 아래와 같이 변경하여 Github credential을 사용하도록 변경
+
 ```
 - context:
     cluster: my.cluster.k8s.local
     user: my-github-token   #users에 등록된 이름이며, 위의 user와 일치해야 함
 ```
+
 이렇게 설정 후 
 > $kubectl get nodes 실행 시 정상적으로 실행된다면 
 ***Github team + Guard + RBAC**를 이요한 인증에 성공

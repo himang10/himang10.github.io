@@ -2,7 +2,7 @@
 layout: post
 title: How to write a markdown 
 date: 2019-09-12
-categories: Markdown
+categories: markdown
 tags: [Test, Ipsum, Markdown, Portfolio]
 author: himang10
 description: Markdown에 대한 설명
