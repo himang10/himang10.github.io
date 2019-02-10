@@ -19,19 +19,22 @@ description: ICP 3.1.1 install guide
 # 사전작업 all node
 -----
 
-1. DNS 설치
+1.DNS 설치
+
 ```
 #/etc/resolv.conf에 nameserver 설정 
 nameserver 10.38.201.250
 ```
 
 2. icp, docker install file copy
+
 ```
 * ibm-cloud-private-x86_64-3.1.1.tar.gz
 * icp-docker-18.03.01_x86_64.bin
 ```
 
 3. local storage 설정 
+
 ```
 * / 100G | all
 * /var/lib/docker 150G | master, mgmt, proxy, worker, va
@@ -44,6 +47,7 @@ nameserver 10.38.201.250
 ```
 
 4. NAS NFS
+
 ```
 * /var/lib/registry 100G | Master
 * /var/lib/icp/audit 100G | M

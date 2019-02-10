@@ -7,6 +7,7 @@ tags: [tag, kubectl, lorem, ipsum]
 author: himang10
 description: Kubernetes 관련 명령어 set 설명
 ---
+
 # Table of Contents
 1. [kubectl 기본 명령어](#kubectl-기본-명령어)
 1. [Rolling Update Command](#Rolling-Update-Command)
@@ -24,13 +25,14 @@ kubectl config use-context
 kubectl config view 
 kubectl get node --show-labels
 ```
+
 ### kubectl에서 두개의 계정으로 명령어 실행
 두개의 서로 다른 권한을 가진 두개의 개정으로 각가 접속하여 처리하기 위한 방법
-````
+```
 kubectl config set-credentials alice --username=alice --password=password
 kubectl config set-credientials bob --usernamw=bob --password=password
 kubectl --user bot create -f pod-priviledge.yaml
-````
+```
 
 ### namespace 변경
 ```
@@ -38,6 +40,7 @@ kubectl --user bot create -f pod-priviledge.yaml
 kubectl config view | grep current-context
 kubectl config set-context <current-context> --namespace=study
 ```
+
 ### POD 내에서 명령어 실행 방버
 ```
 #docker exec
@@ -66,12 +69,13 @@ kubectl get [resource type] [resource-name] --namespace=kube-system or --all-nam
 
 ##checking detail status
 kubectl describe [resource type] [resource-name] --namespace=kube-system or --all-namespaces
-````
+```
+
 ### Pod Log 상세 검색
 ```
   #check Pod Logs
   kubectl logs pod [pod-name]
-  
+
   #Return snapshot logs from pod nginx with only one container
   kubectl logs nginx
 
@@ -156,6 +160,7 @@ JSON.
   #Start the cron job to compute π to 2000 places and print it out every 5 minutes.
   kubectl run pi --schedule="0/5 * * * ?" --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(2000)'
 ```
+
 ### resource 삭제
 ```
 ##delete
@@ -168,6 +173,7 @@ kubectl -n my-ns delete po,svc --all                                      # Dele
 
 persistent volume을 정의하고 Pod 등에서 필요로 하는  Storage Class를 정의한다. Claim은 statefulset에서 설정
 persistent volume & persistence volume chaims & Storage Class
+
 ```
 ##PV & PVC & StorageClass 
 kubectl -n testkafka describe pvc
@@ -202,7 +208,6 @@ spec:
           - k8s3.nogada.dev
 ```
 
-
 ```yaml
 #Storage Class
 kind: StorageClass
@@ -217,6 +222,7 @@ volumeBindingMode: WaitForFirstConsumer
 ```
 kubectl get <nodes, pods> --show-labels
 ```
+
 ### kube info wide
 ```
 kubectl get <nodes | pods> -o wide
@@ -230,7 +236,6 @@ kubectl create configmap game-config-env-file --from-env-file=docs/tasks/configu
 #   Blank lines are ignored.
 #   There is no special handling of quotation marks (i.e. they will be part of the ConfigMap value)).
 ```
-
 
 ### env
 ```
@@ -256,7 +261,6 @@ kubectl get svc,pod
 kubectl run busybox --rm -ti --image=busybox /bin/sh
 wget --spider --timeout=1 nginx
 
-
 #Test access to the serivce when access label is not defined
 #If we attempt to access the nginx Service from a pod without the correct labels, the request will now time out:
 kubectl run busybox --rm -ti --image=busybox /bin/sh
@@ -276,14 +280,16 @@ dig naver.com
 ```
 
 ## Rolling Update Command
-###  rolling update --> 단계적으로 한개씩 변경 실행
+###  rolling update 
+단계적으로 한개씩 변경 실행
 ```
 kubectl scale --current-replicas=2 --replicas=3 rc node-js-scale
 kubectl rolling-update node-js-scale --image=jonbaier/pod-scaling:0.2 --update-priod="2m"
 kubectl rolling-update node-js-scale node-js-scale-v2.0 --image=jonbaier/pod-scaling:0.2 --update-period="30s"
 ```
 
-### rollout --> 버전을 그냥 교체하는 방법 (deployment rollout) - n개를 동시에 살리고 죽인다.
+### rollout
+버전을 그냥 교체하는 방법 (deployment rollout) - n개를 동시에 살리고 죽인다.
 ```
 kubectl set image deployment node-js-deploy node-js-deploy=jonbaier/pod-scaling:0.2
 kubectl rollout status deployment node-js-deploy
@@ -318,22 +324,21 @@ spec:
   - name: main
     image: tutum/curl
     command: ["sleep", "9999999"]
-    
+
 $ kubectl exec -it curl sh
 # curl https://kubernetes
 curl: (6) Could not resolve host: kubernetes
 # cd /var/run/secrets/kubernetes.io/serviceaccount
 # ls
 ca.crt	namespace  token
-    
 ```
 
 ### ServiceAcount-based internal Service call
-````
-> TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
-> export CURL_CA_BUNDLE=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+```
+$ TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+$ export CURL_CA_BUNDLE=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
 
-> curl -H "Authorization: Bearer $TOKEN" https://10.0.0.1:443
+$ curl -H "Authorization: Bearer $TOKEN" https://10.0.0.1:443
 {
   "paths": [
     "/api",
@@ -353,8 +358,8 @@ ca.crt	namespace  token
     "/apis/apps/v1beta1",
     "/apis/apps/v1beta2",
     "/apis/authentication.k8s.io",
-    
-> NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
+
+$ NS=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
 # curl -H "Authorization: Bearer $TOKEN" https://10.0.0.1:443/api/v1/namespaces/$NS/pods
 {
   "kind": "PodList",
@@ -377,6 +382,5 @@ ca.crt	namespace  token
           "kubernetes.io/psp": "ibm-privileged-psp"
         }
       },
-
-### 
+``` 
 
