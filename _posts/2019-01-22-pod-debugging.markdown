@@ -7,14 +7,16 @@ tags: [A kubernetes, POD, call]
 author: himang10
 description: POD 직접 호출 방식
 ---
-# POD 직접 내부 명령어 호출 방식 정의
 
-# Table of Contents
-1. [Pod 내 서비스 호출 방식](#Pod-내-서비스-호출-방식)
-2. [docker를 실제 run해서 내부에서 실행하는 방식](#docker를-실제-run해서-내부에서-실행하는-방식)
+## POD 직접 내부 명령어 호출 방식 정의
+
+### Table of Contents
+1. [Pod내서비스호출방식](#Pod-내-서비스-호출-방식)
+2. [docker를실제run해서내부에서 실행하는 방식](#docker를-실제-run해서-내부에서-실행하는-방식)
 
 
-## Pod 내 서비스 호출 방식
+### Pod 내 서비스 호출 방식
+
 1. kubectrl proxy
 ```
 kubectl proxy
