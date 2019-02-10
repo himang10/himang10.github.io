@@ -20,6 +20,7 @@ tags: [kubernetes, POD, call]
 ```
 kubectl proxy
 ```
+
 2. port-forward
 ```
 kubectl port-forward pods/redis-master-765d459796-258hz 6379:6379
@@ -46,7 +47,7 @@ your're hit kubia-1
 data stored on this pod: No data posted yet
 ```
 
-## docker를 실제 run해서 내부에서 실행하는 방식
+### docker를 실제 run해서 내부에서 실행하는 방식
 명령어를 포함하는 docker image를 직접 실행하여 명령 실행 하는 방식
 ```
 $ docker search tutum
@@ -86,14 +87,14 @@ docker search {name}
 tutum images를 이용하여 명령어 실행
 - lookup 기능 실행 방식
 ```
-#srvlookup이라는 일회용 포트 (--restart=Naver)를 실행한다. 이 포드는 콘솔(-it)에 연결돼 종료되자 마자 바로 삭제된다(--rm). 
-#포드는 tutum/dnsutils 이미지에서 단일 컨테이너를 실행하고 dig 명령어를 싷앻한다.
+# srvlookup이라는 일회용 포트 (--restart=Naver)를 실행한다. 이 포드는 콘솔(-it)에 연결돼 종료되자 마자 바로 삭제된다(--rm). 
+# 포드는 tutum/dnsutils 이미지에서 단일 컨테이너를 실행하고 dig 명령어를 싷앻한다.
 kubectl run -it srvlookup --image=tutum/dnsutils --rm --restart=Never -- dig SRV kubia.default.svc.cluster.local
 kubectl run -it testifconfig --image=alpine --rm --restart=Never -- ifconfig
 kubectl run -it curtest --image=tutum/curl --rm --restart=Naver -- curl .... 
 ```
 
-## 프로세스 종료 원인 제공
+### 프로세스 종료 원인 제공
 kubectl describe pod 내 Message에 종료 시 정의한 메시지를 포함시키는 방법
 ```
 apiVersion: v1
@@ -120,7 +121,7 @@ spec:
       Message:   I've completed my task
 ```
 
-## Application Log handing
+### Application Log handing
 컨테이너가 크래쉬되고 새 컨테이너로 교체되면 새 컨테이너의 로그가 표신된다. 이전 컨테이너의 로그를 보려면 
 ```
 kubectl logs pod -c conatiner --previous
