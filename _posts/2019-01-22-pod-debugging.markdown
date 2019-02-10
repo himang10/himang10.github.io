@@ -7,8 +7,6 @@ author: himang10
 tags: [kubernetes, POD, call]
 ---
 
-## POD 직접 내부 명령어 호출 방식 정의
-
 ### Table of Contents
 1. [Pod내서비스호출방식](#Pod-내-서비스-호출-방식)
 2. [docker를실제run해서내부에서 실행하는 방식](#docker를-실제-run해서-내부에서-실행하는-방식)
@@ -85,7 +83,7 @@ docker search {name}
 ````
 
 tutum images를 이용하여 명령어 실행
-- lookup 기능 실행 방식
+***lookup 기능 실행 방식***
 ```
 # srvlookup이라는 일회용 포트 (--restart=Naver)를 실행한다. 이 포드는 콘솔(-it)에 연결돼 종료되자 마자 바로 삭제된다(--rm). 
 # 포드는 tutum/dnsutils 이미지에서 단일 컨테이너를 실행하고 dig 명령어를 싷앻한다.
