@@ -38,7 +38,7 @@ curl localhost:8001/api/v1/namespaces/<namespace name>/services/<servicename>/pr
 * api server를 통해 클러스터 내부의 서비스에 연결 방법
 서비스에 대한 프록시 요청 URI 경로는 다음과 같이 구성된다
 ```
-# /api/v1/namespaces/<namespace>/services/<service name>/proxy/<path url in pod>
+> # /api/v1/namespaces/<namespace>/services/<service name>/proxy/<path url in pod>
 $ kubectl proxy
 $ tarting to server on 127.0.0.1:8001
 $curl localhost:8001/api/v1/namespaces/default/services/kubia-public/proxy/
