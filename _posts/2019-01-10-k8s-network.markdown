@@ -12,7 +12,8 @@ description: Kubernetes Network Acess
 ## 동일 namespace 내 Pod간 접근 차단 정책
 동일한 namespace 내 Pod 간에 접근을 기본적으로 통제하고 특정 Label Pod 간에 만 통신이 가능하도록 지원하는 방안
 
-1. 모든 클라이언트가 Namespace의 모든 포트에 연결할 수 없도록 default-deny 정책 설정
+* 모든 클라이언트가 Namespace의 모든 포트에 연결할 수 없도록 default-deny 정책 설정
+
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -22,9 +23,9 @@ spec:
   podSelector: {}
   policyTypes:
   - Ingress
-````
+```
+* namespace 일부포트만 서버 포드에 연결 허용
 
-2. namespace 일부포트만 서버 포드에 연결 허용
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -43,9 +44,10 @@ spec:
           app: webserver
     ports:
     - port: 5432
-````
+```
 
-3. Namespace 간 네트워크 격리
+* Namespace 간 네트워크 격리
+
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -64,9 +66,10 @@ spec:
           tenant: manning
     ports:
     - port: 80
-````
+```
 
-4. CIDR 표기법을 사용한 격리
+* CIDR 표기법을 사용한 격리
+
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -82,9 +85,10 @@ spec:
   - from:
     - ipBlock:
         cidr: 192.168.1.0/24
-````
+```
 
-5. out-bound traffic 제안
+* out-bound traffic 제안
+
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
@@ -105,7 +109,7 @@ spec:
         cider: 192.168.1.0/24
     ports:
     - port: 5432
-````
+```
 
 
 
