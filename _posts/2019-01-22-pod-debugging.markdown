@@ -27,7 +27,6 @@ kubectl proxy
 kubectl port-forward pods/redis-master-765d459796-258hz 6379:6379
 kubectl port-forward deployment/redis-master 6379:6379 
 kubectl port-forward svc/redis-master 6379:6379
-
 ```
 
 
