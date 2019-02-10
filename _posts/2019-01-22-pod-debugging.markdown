@@ -83,6 +83,7 @@ docker search {name}
 ````
 
 tutum images를 이용하여 명령어 실행
+
 ***lookup 기능 실행 방식***
 ```
 # srvlookup이라는 일회용 포트 (--restart=Naver)를 실행한다. 이 포드는 콘솔(-it)에 연결돼 종료되자 마자 바로 삭제된다(--rm). 
@@ -93,6 +94,7 @@ kubectl run -it curtest --image=tutum/curl --rm --restart=Naver -- curl ....
 ```
 
 ### 프로세스 종료 원인 제공
+
 kubectl describe pod 내 Message에 종료 시 정의한 메시지를 포함시키는 방법
 ```
 apiVersion: v1
@@ -121,6 +123,7 @@ spec:
 ```
 
 ### Application Log handing
+
 컨테이너가 크래쉬되고 새 컨테이너로 교체되면 새 컨테이너의 로그가 표신된다. 이전 컨테이너의 로그를 보려면 
 ```
 kubectl logs pod -c conatiner --previous
