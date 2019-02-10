@@ -3,9 +3,8 @@ layout: post
 title: POD 내 명령어 호출 방식
 date: 2019-01-24
 categories: Kubernetes
-tags: [A kubernetes, POD, call]
 author: himang10
-description: POD 직접 호출 방식
+tags: [kubernetes, POD, call]
 ---
 
 ## POD 직접 내부 명령어 호출 방식 정의
