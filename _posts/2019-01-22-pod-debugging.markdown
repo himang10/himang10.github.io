@@ -16,34 +16,34 @@ tags: [kubernetes, POD, call]
 
 ### Pod 내 서비스 호출 방식
 
-1. kubectrl proxy
+* kubectrl proxy
 ```
 kubectl proxy
 ```
 
-2. port-forward
+* port-forward
 ```
 kubectl port-forward pods/redis-master-765d459796-258hz 6379:6379
 kubectl port-forward deployment/redis-master 6379:6379 
 kubectl port-forward svc/redis-master 6379:6379
 ```
 
-3. api server 호출 방식
+* api server 호출 방식
 api server를 통해 직접 pod나 서비스를 호출하는 방법
 ```
 curl localhost:8001/api/v1/namespaces/<namespace name>/pods/<podname>/proxy/<path>
 curl localhost:8001/api/v1/namespaces/<namespace name>/services/<servicename>/proxy/<path>
 ```
 
-4. api server를 통해 클러스터 내부의 서비스에 연결 방법
+* api server를 통해 클러스터 내부의 서비스에 연결 방법
 서비스에 대한 프록시 요청 URI 경로는 다음과 같이 구성된다
 ```
 # /api/v1/namespaces/<namespace>/services/<service name>/proxy/<path url in pod>
-$kubectl proxy
-Starting to server on 127.0.0.1:8001
-
+$ kubectl proxy
+$ tarting to server on 127.0.0.1:8001
 $curl localhost:8001/api/v1/namespaces/default/services/kubia-public/proxy/
 your're hit kubia-1
+
 data stored on this pod: No data posted yet
 ```
 
