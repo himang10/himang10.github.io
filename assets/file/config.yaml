@@ -1,0 +1,431 @@
+# Licensed Materials - Property of IBM
+# IBM Cloud private
+# @ Copyright IBM Corp. 2017 All Rights Reserved
+# US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+
+---
+
+## Network Settings
+network_type: calico
+# network_helm_chart_path: < helm chart path >
+
+## Network in IPv4 CIDR format
+network_cidr: 10.1.0.0/16
+
+## Kubernetes Settings
+service_cluster_ip_range: 10.0.0.0/16
+
+# cluster_domain: cluster.local
+cluster_name: mycluster
+#cluster_name: icp311cluster
+cluster_CA_domain: "{{ cluster_name }}.icp"
+
+## Etcd Settings
+etcd_extra_args: ["--grpc-keepalive-timeout=0", "--grpc-keepalive-interval=0", "--snapshot-count=10000"]
+# Keep the log data separate from the etcd data.
+# You could set etcd wal dirctory to a centralized and remote log directory for persistent logging.
+# etcd_data_dir: "/var/lib/etcd"
+# etcd_wal_dir: "/var/lib/etcd-wal"
+
+## General Settings
+# wait_for_timeout: 600
+fips_enabled: false
+
+## Advanced Settings
+default_admin_user: admin
+default_admin_password: admin
+password_rules:
+ - '(.*)'
+# ansible_user: <username>
+# ansible_become: true
+# ansible_become_password: <password>
+
+## Kubernetes Settings
+# kubelet_extra_args: [""]
+kubelet_extra_args: ["--fail-swap-on=false"]
+# kube_apiserver_extra_args: []
+# kube_controller_manager_extra_args: []
+# kube_proxy_extra_args: []
+# kube_scheduler_extra_args: []
+
+## Bootstrap token
+# bootstrap_token_ttl: "24h0m0s"
+
+
+## Enable Kubernetes Audit Log
+#auditlog_enabled: false
+auditlog_enabled: true
+
+## Audit logging settings
+journal_path: /my/log/journal
+
+## Cluster Router settings
+# router_http_port: 8080
+# router_https_port: 8443
+router_http_port: 8080
+router_https_port: 8443
+
+## Nginx Ingress settings
+# ingress_http_port: 80
+# ingress_https_port: 443
+ingress_http_port: 80
+ingress_https_port: 443 
+
+## GlusterFS Storage Settings
+# storage-glusterfs:
+#  nodes:
+#    - ip: <storage_node_m_IP_address>
+#      devices:
+#        - <link path>/<symlink of device aaa>
+#        - <link path>/<symlink of device bbb>
+#    - ip: <storage_node_n_IP_address>
+#      devices:
+#        - <link path>/<symlink of device ccc>
+#    - ip: <storage_node_o_IP_address>
+#      devices:
+#        - <link path>/<symlink of device ddd>
+#  storageClass:
+#    create: true
+#    name: glusterfs
+#    isDefault: false
+#    volumeType: replicate:3
+#    reclaimPolicy: Delete
+#    volumeBindingMode: Immediate
+#    volumeNamePrefix: icp
+#    additionalProvisionerParams: {}
+#    allowVolumeExpansion: true
+#  gluster:
+#    resources:
+#      requests:
+#        cpu: 500m
+#        memory: 512Mi
+#      limits:
+#        cpu: 1000m
+#        memory: 1Gi
+#  heketi:
+#    backupDbSecret: heketi-db-backup
+#    authSecret: heketi-secret
+#    maxInFlightOperations: 20
+#    resources:
+#      requests:
+#        cpu: 500m
+#        memory: 512Mi
+#      limits:
+#        cpu: 1000m
+#        memory: 1Gi
+#  nodeSelector:
+#    key: hostgroup
+#    value: glusterfs
+#  prometheus:
+#    enabled: false
+#    path: "/metrics"
+#    port: 8080
+#  tolerations: []
+#  podPriorityClass: system-cluster-critical
+
+
+## storage-minio settings
+# storage-minio:
+#  image:
+#    repository: "{{ image_repo }}/minio"
+#  mcImage:
+#    repository: "{{ image_repo }}/minio-mc"
+#  mode: standalone
+#  accessKey: "admin"
+#  secretKey: "admin1234"
+#  minioAccessSercret: "minio-secret"
+#  configPath: "/root/.minio/"
+#  mountPath: "/export"
+#  replica: 4
+#  persistence:
+#    enabled: false
+#    useDynamicProvisioning: false
+#    storageClass: standard
+#    accessMode: ReadWriteOnce
+#    size: 10Gi
+#  service:
+#    type: ClusterIP
+#    clusterIP: None
+#    loadBalancerIP: None
+#    port: 9000
+#    nodePort: 31311
+#  ingress:
+#    enabled: false
+#    path: /
+#    hosts: ""
+#    tls: ""
+#  tls:
+#    enabled: false
+#    type: "selfsigned"
+#    minioTlsSercret: ""
+#  nodeSelector: ""
+#  tolerations: ""
+
+## Network Settings
+## Calico Network Settings
+calico_ipip_enabled: false
+# calico_tunnel_mtu: 1430
+# calico_ip_autodetection_method: can-reach={{ groups['master'][0] }}
+#calico_ip_autodetection_method: interface=bond1
+
+## IPSec mesh Settings
+## If user wants to configure IPSec mesh, the following parameters
+## should be configured through config.yaml
+# ipsec_mesh:
+#   enable: true
+#   subnets: []
+#   exclude_ips: []
+#   cipher_suite: ""
+
+## Environment Isolation
+# Example: [{namespace: production, hostgroup: proxy-prod, lb_address: x.x.x.x}]
+# Mandatory parameters: namespace, hostgroup
+# Optional parameters: lb_address
+isolated_namespaces: []
+isolated_proxies: []
+
+kube_apiserver_secure_port: 8001
+
+## External loadbalancer IP or domain
+## Or floating IP in OpenStack environment
+cluster_lb_address: 196.90.1.94
+
+## External loadbalancer IP or domain
+## Or floating IP in OpenStack environment
+# proxy_lb_address: none
+#proxy_lb_address: 192.90.1.92
+
+## Install in firewall enabled mode
+# firewall_enabled: false
+
+## Allow loopback dns server in cluster nodes
+# loopback_dns: false
+
+## High Availability Settings: etcd or keepalived
+#vip_manager: etcd
+
+## High Availability Settings for master nodes
+# vip_iface: eth0
+# cluster_vip: 127.0.1.1
+#vip_iface: bond0
+#cluster_vip: 192.168.xxx.xxx
+
+## High Availability Settings for Proxy nodes
+# proxy_vip_iface: eth0
+# proxy_vip: 127.0.1.1
+#proxy_vip_iface: bond0
+#proxy_vip: 192.168.xxx.xxx
+
+## vSphere cloud provider Settings
+## If user wants to configure vSphere as cloud provider, vsphere_conf
+## parameters should be configured through config.yaml
+# kubelet_nodename: hostname
+# cloud_provider: vsphere
+# vsphere_conf:
+#    user: <vCenter username for vSphere cloud provider>
+#    password: <password for vCenter user>
+#    server: <vCenter server IP or FQDN>
+#    port: [vCenter Server Port; default: 443]
+#    insecure_flag: [set to 1 if vCenter uses a self-signed certificate]
+#    datacenter: <datacenter name on which Node VMs are deployed>
+#    datastore: <default datastore to be used for provisioning volumes>
+#    working_dir: <vCenter VM folder path in which node VMs are located>
+
+## You can disable following services if they are not needed:
+#   custom-metrics-adapter
+#   image-security-enforcement
+#   istio
+#   metering
+#   monitoring
+#   service-catalog
+#   storage-minio
+#   storage-glusterfs
+#   vulnerability-advisor
+management_services:
+  custom-metrics-adapter: enabled
+  image-security-enforcement: disabled
+  istio: disabled
+  metering: enabled
+  monitoring: enabled
+  service-catalog: enabled
+  storage-minio: disabled
+  storage-glusterfs: disabled
+  vulnerability-advisor: disabled
+
+image-security-enforcement:
+ clusterImagePolicy:
+   - name: "*"
+     policy:
+     
+## Docker configuration option, more options see
+## https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file
+# docker_config:
+#   log-opts:
+#     max-size: "100m"
+#     max-file: "10"
+
+## Docker environment setup
+# docker_env:
+#   - HTTP_PROXY=http://1.2.3.4:3128
+#   - HTTPS_PROXY=http://1.2.3.4:3128
+#   - NO_PROXY=localhost,127.0.0.1,{{ cluster_CA_domain }}
+
+## Install/upgrade docker version
+#docker_version: 18.03.1
+#docker_package_name: icp-docker-18.03.1_x86_64.bin
+
+## Install Docker automatically or not
+# install_docker: true
+#install_docker: true
+
+## Nginx Ingress Controller configuration
+## You can add your nginx ingress controller configuration, and the allowed configuration can refer to
+## https://github.com/kubernetes/ingress-nginx/blob/nginx-0.16.2/docs/user-guide/nginx-configuration/configmap.md
+## Section ingress_controller is obsolete, it is replaced by nginx-ingress.
+nginx-ingress:
+  ingress:
+    image:
+      repository: "mycluster.icp:8500/ibmcom/nginx-ingress-controller"
+    config:
+      disable-access-log: 'true'
+      keep-alive-requests: '10000'
+      upstream-keepalive-connections: '64'
+#      worker-processes: "8" default is auto
+#      max-worker-connections: "1500"
+      ssl-protocols: TLSv1 TLSv1.1 TLSv1.2
+    extraArgs:
+      publish-status-address: "{{ proxy_external_address }}"
+      enable-ssl-passthrough: true
+      enable-ssl-chain-completion: false
+    
+#   defaultBackend:
+#     image:
+#       repository: "icp311cluster.icp:8500/ibmcom/defaultbackend"
+
+## Clean metrics indices in Elasticsearch older than this number of days
+metrics_max_age: 3
+#metrics_max_age: 32
+
+## Clean application log indices in Elasticsearch older than this number of days
+#logs_maxage: 32
+logs_maxage: 3
+
+## Uncomment the line below to install Kibana as a managed service.
+kibana_install: true
+
+## Istio addons security Settings
+## If user wants to configure Istio addons securty settings
+## parameters should be configured through config.yaml
+# istio_addon:
+#   grafana:
+#     username: admin
+#     passphrase: admin
+#   kiali:
+#     username: admin
+#     passphrase: admin
+
+
+# STARTING_MONITORING
+monitoring:
+  prometheus:
+    scrapeInterval: 1m
+    evaluationInterval: 1m
+    retention: 24h
+    persistentVolume:
+      enabled: false
+      storageClass: "-"
+    resources:
+      limits:
+        cpu: 500m
+        memory: 2048Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+  alertmanager:
+    persistentVolume:
+      enabled: false
+      storageClass: "-"
+    resources:
+      limits:
+        cpu: 200m
+        memory: 256Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
+  grafana:
+    persistentVolume:
+      enabled: false
+      storageClass: "-"
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+# STARTING_LOG
+    logstash:
+      heapSize: "256m"
+      memoryLimit: "512Mi"
+      port: 5044
+    elasticsearch:
+      name: elasticsearch
+      internalPort: 9300
+      client:
+        restPort: 9200
+        heapSize: "256m"
+        memoryLimit: "512Mi"
+      data:
+        # Replace the value below with the number of management nodes in your cluster
+        replicas: "1"
+        heapSize: "512m"
+        memoryLimit: "1024M"
+        storage:
+          size: "1Gi"
+          storageClass: "logging-storage-datanode"
+      master:
+        # Replace the value below with the number of management nodes in your cluster
+        replicas: "1"
+        heapSize: "256m"
+        memoryLimit: "512Mi"
+    kibana:
+      install: "true"
+      internal: 5601
+      external: 31601
+    curator:
+      app:
+        # The default for this value is 1.
+        count: "1"
+
+      monitoring:
+        # The default for this value is 1.
+        count: "1"
+    security:
+      enabled: false
+    mode: managed
+    # The value below is the default. If you changed this during install, it needs to be changed here.
+    clusterDomain: "mycluster.icp"
+    nameOverride: elk
+
+# STARTING MARIADB
+mariadb:
+ mariadb:
+   resources:
+     limits:
+       cpu: 500m
+       memory: 512Mi
+     requests:
+       cpu: 200m
+       memory: 128Mi
+
+#ansible_user: root
+#ansible_ssh_pass: ubuntu
+#ansible_ssh_common_args: "-oPubkeyAuthentication=no"
+
+ansible_user: ubuntu
+ansible_ssh_pass: ubuntu
+ansible_become: true
+#ansible_become_pass: "{{ ansible_ssh_pass }}"
+#ansible_ssh_common_args: "-oPubkeyAuthentication=no"
+# END_MONITORING
