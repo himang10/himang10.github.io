@@ -15,7 +15,7 @@ description: ICP 3.1.1 install guide
 4. [설치 이슈](#설치-이슈)
 
 
-[config.yaml file](./assets/file/config.yaml)
+[config.yaml file](../assets/file/config.yaml)
 
 # 사전작업 all node
 -----
