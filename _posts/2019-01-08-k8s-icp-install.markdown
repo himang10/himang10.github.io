@@ -243,7 +243,7 @@ cd /opt/ibm-cloud-private-3.1.1
 sudo docker run -v $(pwd):/data -e LICENSE=accept ibmcom/icp-inception-amd64:3.1.1-ee cp -r cluster /data
 ```
 
-5 ssh copy
+5 ssh_key 복사
 
 ```
 #1의 ssh key를 cluster ssh key에 복사
