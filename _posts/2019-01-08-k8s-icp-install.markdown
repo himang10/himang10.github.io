@@ -432,7 +432,7 @@ $sudo docker run --net=host -it -e LICENSE=accept -v "$(pwd)":/installer/cluster
 kubectl label 10.100.1.12 management=true 설정
 
 * 만약 PV 가 빠져 있을 때에는 PV 생성
-```
+```yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -492,7 +492,7 @@ $ kubectl edit psp ibm-restricted-psp
 
 12 audit log level 조정 
 
-```
+```cmd
 /etc/cfc/conf/audit-policy.yaml 에서 로그 조정
 ```
 
@@ -500,7 +500,7 @@ $ kubectl edit psp ibm-restricted-psp
 
 14 apiserver  restart
 
-```
+```cmd
 /etc/cfc/conf/audit-policy.yaml 수정 후 재 로딩을 위해 kubelet을 재시작해야 함
 --> systemctl restart kubelet.service
 apiserver를 재시작시키려면 systemctl restart kube-apiserver.service
