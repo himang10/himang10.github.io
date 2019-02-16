@@ -75,12 +75,12 @@ OpenLdap:
 * 생성 시 configuration 정보
 
 release name                 | ldap
------------------------------|-----------------------------------------------
-target namespace 	         | default
-SeedUsers.usergroup	         | zcpusers
+---------------------------- | ---------------------------------------------
+target namespace             | default
+SeedUsers.usergroup          | zcpusers
 SeedUsers.userlist           | master
 SeedUsers.initialPassword    | 1234
-Image		                 | cnpstg.skhynix.com:8500/default/phpldapadmin
+Image                        | cnpstg.skhynix.com:8500/default/phpldapadmin
 
 * 접속정보
 > URL   : https://phpldapadmin.cnpstg.skhynix.com
@@ -88,4 +88,141 @@ Image		                 | cnpstg.skhynix.com:8500/default/phpldapadmin
 
 configmap
 > ldap-seedusers
- 
+
+for example
+- dc=local,dc=io
+- cn=admin,dc=local,dc=io
+- ldap://cluster_IP:389
+- 그룹 ID map: *:cn
+- 사용자 ID: *:uid
+- 그룹 맴버 ID: groupofUniqueNames:uniqueMember
+
+### cloudctl 사용하지 않고 설치하는 방법
+
+*** Helm install by local file ***
+
+* Helm install
+```
+helm install --name openldap --namespace kube-system ./openldap --tls
+```
+
+* 삭제 시
+```
+helm ls --all --tls
+helm delete openldap --purge --tls
+```
+
+* 생성 후 상태 확인
+- 직접 docker 접속 해서 확인
+```
+kubectl exec -it {pod name} 
+ldapsearch -x -H ldap://localhost:389 -b "dc=local,dc=io" -D "cn=admin,dc=local,dc=io" -w admin
+# extended LDIF
+#
+# LDAPv3
+# base <dc=local,dc=io> with scope subtree
+# filter: (objectclass=*)
+# requesting: ALL
+#
+
+# local.io
+dn: dc=local,dc=io
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: Example Inc.
+dc: local
+
+# admin, local.io
+dn: cn=admin,dc=local,dc=io
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+description: LDAP administrator
+userPassword:: e1NTSEF9Y2piNEx1UEpzRHh3Q01WWERaZDdqSTNrblBybHRwY1k=
+
+# Groups, local.io
+dn: ou=Groups,dc=local,dc=io
+objectClass: organizationalUnit
+ou: Groups
+
+# People, local.io
+dn: ou=People,dc=local,dc=io
+objectClass: organizationalUnit
+ou: People
+
+# user1, People, local.io
+dn: uid=user1,ou=People,dc=local,dc=io
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+uid: user1
+displayName: user1
+sn: user1
+cn: user1
+userPassword:: eXd5aTEwMDQ=
+
+# user2, People, local.io
+dn: uid=user2,ou=People,dc=local,dc=io
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+uid: user2
+displayName: user2
+sn: user2
+cn: user2
+userPassword:: eXd5aTEwMDQ=
+
+# user3, People, local.io
+dn: uid=user3,ou=People,dc=local,dc=io
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+uid: user3
+displayName: user3
+sn: user3
+cn: user3
+userPassword:: eXd5aTEwMDQ=
+
+# user4, People, local.io
+dn: uid=user4,ou=People,dc=local,dc=io
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: top
+uid: user4
+displayName: user4
+sn: user4
+cn: user4
+userPassword:: eXd5aTEwMDQ=
+
+# admin, Groups, local.io
+dn: cn=admin,ou=Groups,dc=local,dc=io
+cn: admin
+objectClass: groupOfUniqueNames
+objectClass: top
+owner: cn=admin,dc=local,dc=io
+uniqueMember: uid=user1,ou=People,dc=local,dc=io
+uniqueMember: uid=user2,ou=People,dc=local,dc=io
+uniqueMember: uid=user3,ou=People,dc=local,dc=io
+uniqueMember: uid=user4,ou=People,dc=local,dc=io
+
+# search result
+search: 2
+result: 0 Success
+
+# numResponses: 10
+# numEntries: 9
+```
+- 외부에서 접속 하는 방법
+```
+kubectl port-forward openldap-8b474496c-628n4 30011:389 &
+
+ldapsearch -x -H ldap://localhost:30011 -b "dc=local,dc=io" -D "cn=admin,dc=local,dc=io" -w admin
+```
+
+- Ingress 접속
+

@@ -1,0 +1,53 @@
+---
+layout: post
+title: Feature images
+date: 2019-01-06
+categories: kubernetes
+author: himang10
+feature-img: "assets/img/pexels/desk-messy.jpeg"
+thumbnail: "assets/img/thumbnails/desk-messy.jpeg"
+tags: [Test, Lorem]
+---
+
+# Table of Contents
+1. [xxx](#xxx)
+2. [xxx](#xxx)
+3. [xxx](#xxx)
+
+
+### helm install
+
+* helm search -l
+* helm install --name helm-name --namespace namespace -f values.yaml stables/openldap
+```
+$ helm install --name openldap --namespace kube-system ./openldap --tls
+NAME:   openldap
+LAST DEPLOYED: Fri Feb 15 20:54:08 2019
+NAMESPACE: kube-system
+STATUS: DEPLOYED
+
+RESOURCES:
+==> v1beta1/Deployment
+NAME            DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
+openldap        1        1        1           0          0s
+openldap-admin  1        1        1           0          0s
+
+==> v1/Pod(related)
+NAME                             READY  STATUS             RESTARTS  AGE
+openldap-8b474496c-xjfxr         0/1    Init:0/1           0         0s
+openldap-admin-77987dd5c9-tt7wm  0/1    ContainerCreating  0         0s
+
+==> v1/ConfigMap
+NAME                DATA  AGE
+openldap-seedusers  1     0s
+
+==> v1/Service
+NAME            TYPE       CLUSTER-IP    EXTERNAL-IP  PORT(S)       AGE
+openldap        ClusterIP  10.0.35.179   <none>       389/TCP       0s
+openldap-admin  NodePort   10.0.221.249  <none>       80:31080/TCP  0s
+```
+
+* helm delete 
+```
+$ helm delete openldap --purge --tls
+```

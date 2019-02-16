@@ -36,7 +36,7 @@ Handling connection for 30011
 
 다른 창에서 
 ```cmd
-$ldapsearch -x -H ldap://localhost:30011 -b dc=example,dc=org -D "cn=admin,dc=example,dc=org" -w admin
+$ldapsearch -x -H ldap://localhost:30011 -b "dc=example,dc=org" -D "cn=admin,dc=example,dc=org" -w admin
 # extended LDIF
 #
 # LDAPv3
