@@ -10,9 +10,13 @@ tags: [serverless, lambda, tensorflow, dl]
 ---
 
 ## Table of Contents
-1. [xxx](#xxx)
-2. [xxx](#xxx)
-3. [xxx](#xxx)
+1. [Why Serverless + TensorFlow](#Why_Serverless_+_TensorFlow)
+2. [The difference in both approaches](#The difference_in_both_approaches)
+3. [The basic 4 line example](#The_basic_4_line_example)
+3. [“Hello world” code](#“Hello_world”_code)
+3. [Code decomposition - breaking down the model](#Code_decomposition_-_breaking_down_the_model)
+3. [API example](#API_example)
+3. [Conclusion](#Conclusion)
 
 ## Using TensorFlow and the Serverless Framework 
 ### for deep learning and image recognition
