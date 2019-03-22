@@ -49,3 +49,106 @@ openldap-admin  NodePort   10.0.221.249  <none>       80:31080/TCP  0s
 ```
 $ helm delete openldap --purge --tls
 ```
+
+## helm CLI 설치
+
+Helm v2.9.1 2진을 다운로드해야 합니다. Helm GitHub 사이트에서 Helm v2.9.1 2진을 다운로드하려면 Helm 2.9.1 을 참조하십시오.
+설치 확인
+
+Helm 2.9.1을 사용하는 경우에는 HELM_HOME을 설정해야 합니다.
+```
+ export HELM_HOME=~/.helm
+```
+Helm CLI를 초기화하십시오.
+
+* 인터넷 액세스가 가능한 환경에서는 다음 명령을 실행하십시오.
+```
+helm init --client-only
+```
+
+* 인터넷 액세스가 불가능한 환경에서는 다음 명령을 실행하십시오.
+```
+helm init --client-only --skip-refresh
+```
+Helm CLI가 초기화되었는지 확인하십시오. 다음 명령을 실행하십시오.
+```
+helm version --tls
+``
+출력은 다음 컨텐츠와 비슷합니다.
+```
+ Client: &version.Version{SemVer:"v2.9.1", GitCommit:"20adb27c7c5868466912eebdf6664e7390ebe710", GitTreeState:"clean"}
+ Server: &version.Version{SemVer:"v2.9.1", GitCommit:"20adb27c7c5868466912eebdf6664e7390ebe710", GitTreeState:"clean"}
+```
+
+다음 단계를 수행하여 사용 가능하거나 설치된 패키지 목록을 검토하십시오.
+Helm 저장소를 추가하십시오. Kubernetes Incubator 저장소를 추가하려면 다음 명령을 실행하십시오.
+```
+helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+```
+
+다음 명령을 실행하여 사용 가능한 차트를 확인하십시오.
+```
+helm search -l
+```
+
+차트를 설치하십시오. 다음 명령을 실행하십시오.
+```
+helm install --name=release_name stable/chart_in_repo --tls
+```
+
+이 명령에서 release_name은 차트에서 작성될 릴리스의 이름이고 chart_in_repo는 설치할 사용 가능한 차트의 이름입니다. 예를 들어, WordPress 차트를 설치하려면 다음 명령을 실행하십시오.
+```
+helm install --name=my-wordpress stable/wordpress --tls
+```
+
+다음 명령을 실행하여 릴리스를 나열하십시오.
+```
+helm list --tls
+```
+
+출력은 다음 컨텐츠와 비슷합니다.
+```
+NAME                REVISION    UPDATED                     STATUS      CHART              NAMESPACE
+ my-wordpress        1           Wed Jun 28 22:15:13 2017    DEPLOYED    wordpress-0.6.5    default
+```
+
+릴리스를 제거하려면 다음 명령을 실행하십시오.
+```
+helm delete release_name --purge --tls
+```
+
+이 명령에서 release_name은 제거할 릴리스의 이름입니다. 예를 들어, WordPress 릴리스를 제거하려면 다음 명령을 실행하십시오.
+```
+helm delete my-wordpress --purge --tls
+```
+
+https://www.ibm.com/support/knowledgecenter/ko/SSBS6K_2.1.0.3/app_center/create_helm_cli.html
+https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.1.1/app_center/create_helm_cli.html
+
+
+Helm docs 문서
+https://docs.helm.sh/using_helm/#installing-helm
+
+### Helm TLS 설정
+https://docs.helm.sh/using_helm/#using-ssl-between-helm-and-tiller
+
+tls를 사용하기 위해서는
+.helm에 cert.pem과 key.pem이 복사되어 있어야 함,
+이 데이터는
+
+ibm 설치 디렉토리 (Boot 노드)의 cert key를 복사해서 사용해야 함
+```
+# boot node에 접속해서 sudo su 로 root 로그인
+ubuntu@k8s-boot-01:/opt/ibm-cloud-private-3.1.1/cluster$ sudo su
+root@k8s-boot-01:/opt/ibm-cloud-private-3.1.1/cluster/cfc-certs/helm# pwd
+/opt/ibm-cloud-private-3.1.1/cluster/cfc-certs/helm
+
+root@k8s-boot-01:/opt/ibm-cloud-private-3.1.1/cluster/cfc-certs/helm# ls
+admin.crt  admin.key  tiller.crt  tiller.key
+
+# admin.crt와 admin.key를 ~/.helm에 복사해서 admin.crrt --> cert.pem, admin.key --> key.pem으로 이름 변경
+#bashrc에
+export HELM_HOME=/home/ubuntu/.helm으로 설정 후 
+
+$ helm version --tls 
+```

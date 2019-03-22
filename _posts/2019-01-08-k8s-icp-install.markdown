@@ -542,3 +542,20 @@ hostname에 등록되어 있는 호스트 내임을 hosts에 등록
 ``
 
 $ sudo /etc/init.d/networking restart
+
+19 ClusterImagePolicy 문제
+포털에서 ClusterImagePolicy를 삭제하고 
+```
+apiVersion: securityenforcement.admission.cloud.ibm.com/v1beta1
+kind: ClusterImagePolicy
+metadata:
+name: ibmcloud-default-cluster-image-policy
+spec:
+ repositories:
+  # allow all images
+  - name: "*"
+    policy:
+```
+
+
+
