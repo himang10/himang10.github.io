@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Feature images
+title: Using Tensorflow and the serverless f/w for DL and Image recognition
 date: 2019-03-22
 categories: serverless
 author: himang10
