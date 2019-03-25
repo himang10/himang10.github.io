@@ -14,3 +14,6 @@ tags: [Test, Lorem]
 2. [xxx](#xxx)
 3. [xxx](#xxx)
 
+# File loading
+# _post 와 동일 디렉토리에 files/순이익-매출 지수.PNG 존재
+<img src="/files/순이익-매출 지수.PNG" width="600"> 
