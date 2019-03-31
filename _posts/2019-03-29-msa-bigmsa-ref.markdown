@@ -4,8 +4,6 @@ title: 대규모 마이크로서비스
 date: 2019-03-29
 categories: msa
 author: himang10
-feature-img: "assets/img/pexels/desk-messy.jpeg"
-thumbnail: "assets/img/thumbnails/desk-messy.jpeg"
 tags: [msa, architecture]
 ---
 
@@ -16,11 +14,6 @@ tags: [msa, architecture]
 3. [아키텍처 안전 조치](#아키텍처_안전_조치)
 3. [안티프래질 조직](#안티프래질_조직)
 3. [데이터베이스 확장](#데이터베이스_확장)
-3. [xxx](#xxx)
-3. [xxx](#xxx)
-3. [xxx](#xxx)
-3. [xxx](#xxx)
-3. [xxx](#xxx)
 
 ## 대규모 마이크로서비스
 

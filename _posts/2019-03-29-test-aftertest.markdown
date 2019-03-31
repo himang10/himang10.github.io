@@ -4,8 +4,6 @@ title: 출시후 테스트
 date: 2019-03-29
 categories: test
 author: himang10
-feature-img: "assets/img/pexels/desk-messy.jpeg"
-thumbnail: "assets/img/thumbnails/desk-messy.jpeg"
 tags: [msa, architecture]
 ---
 
