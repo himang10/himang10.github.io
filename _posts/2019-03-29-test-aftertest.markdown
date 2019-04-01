@@ -7,13 +7,13 @@ author: himang10
 tags: [msa, architecture]
 ---
 
-# Table of Contents
+### Table of Contents
 1. [Deployment를 Relase와 분리](#Deployment를_Relase와_분리)
 3. [canary deployment](#canary_deployment)
 3. [교차기능 테스트 (cross-functional requirements)](#교차기능_테스트_(cross-functional_requirements)
 
 
-## 출시 후 테스트
+### 출시 후 테스트
 배포 전에 시험을 하더라도 운영 중인 실환경 시스템에서 맞닥뜨릴 문제를 완전히 해소할 수 없다. 
 즉 테스트를 늘려도 효과는 적은 현상 특정 시점부터 수확 체감(dimishing returns)이 발생한다. 
 > 결국 배포 전의 테스팅을 통해서는 장애의 가능성을 완전히 없앨 수 없다.

@@ -7,7 +7,7 @@ author: himang10
 tags: [msa, architecture]
 ---
 
-# Table of Contents
+## Table of Contents
 1. [장애는 어디에서나 발생한다](#장애는_어디에서나_발생한다)
 2. [얼마나 많아야 너무 많은 건가](#얼마나_많아야_너무_많은_건가)
 3. [기능 분해](#기능_분해)
