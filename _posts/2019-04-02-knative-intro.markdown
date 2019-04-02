@@ -9,20 +9,32 @@ tags: [serverless, knative, kubernetes]
 ---
 
 ## Table of Contents
-1. [xxx](#xxx)
-2. [xxx](#xxx)
-3. [xxx](#xxx)
+1. [knative document](#knative_document)
+2. [knative component](#knative_component)
 
 ### knative document 
 [welcom knative](https://www.knative.dev/docs/)
+[Using knative to deploy serverless applications to Kubernetes](https://codelabs.developers.google.com/codelabs/knative-intro/#0)
 
-<img src="https://www.knative.dev/docs/images/knative-audience.svg" width="600">
+<img src="https://www.knative.dev/docs/images/knative-audience.svg" width="800">
 
-### knative component
+#### knative principles
+* Knative is native to Kubernetes (APIs are hosted on Kubernetes, ### deployment unit ### is * container images *)
+* You can install/use parts of Knative independently (e.g. only Knative Build, to do in-cluster builds)
+* Knative components are pluggable (e.g. don't like the autoscaler? write your own)
+
+### knative component (Resource Type)
+Kubernetes offers a feature called Custom Resource Definitions (CRDs). 
+With CRDs, third party Kubernetes controllers like Istio or Knative can install more APIs into Kubernetes
+Resource Type
+* Service
+* Build
+* Event
+
+Knative installs of three families of custom resource APIs:
+
 1. [Build](https://github.com/knative/build/) - Source-to-container build orchestration
-A Knative build extends Kubernetes and utilizes existing Kubernetes primitives to provide you with the ability to run on-cluster container builds from source. 
-For example, you can write a build that uses Kubernetes-native resources to obtain your source code from a repository, build a container image, then run that image
-While Knative builds are optimized for building, testing, and deploying source code, you are still responsible for developing the corresponding components that
+Set of APIs that allow you to execute builds (arbitrary transformations on source code) inside the cluster. For example, you can use Knative Build to compile an app into a container image, then push the image to a registry
 * Retrieve source code from repositories.
 * Run multiple sequential jobs against a shared filesystem, for example:
   - Install dependencies.
@@ -34,7 +46,7 @@ Kubernetes 상에 빌드를 실행하는 "boring but difficult" 작업을 대신
 While today, a Knative build does not provide a complete standalone CI/CD solution, 
 it does however, provide a lower-level building block that was purposefully designed to enable integration and utilization in larger systems.
 
-2. [Eventing](https://github.com/knative/eventing) - Management and delivery of events
+2. [Eventing](https://github.com/knative/eventing) - Set of APIs that let you declare event sources and event delivery to your applications.
 work-in-progress eventing system that is designed to address a common need for cloud native development
 * Services are loosely coupled during development and deployed independently
 * A producer can generate events before a consumer is listening, and a consumer can express an interest in an event or class of events that is not yet being produced.
@@ -42,7 +54,7 @@ work-in-progress eventing system that is designed to address a common need for c
   - without modifying producer or consumer, and
   - with the ability to select a specific subset of events from a particular producer.
 
-3. [Serving](https://github.com/knative/serving/) - Request-driven compute that can scale to zero
+3. [Serving](https://github.com/knative/serving/) - Set of APIs that help you host applications that serve traffic. Provides features like custom routing and autoscaling.
 Knative Serving builds on Kubernetes and Istio to support deploying and serving of serverless applications and functions. 
 Serving is easy to get started with and scales to support advanced scenarios.
 
