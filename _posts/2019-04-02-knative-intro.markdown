@@ -16,7 +16,7 @@ tags: [serverless, knative, kubernetes]
 ### knative document 
 [welcom knative](https://www.knative.dev/docs/)
 
-<img src="https://www.knative.dev/docs/images/knative-audience.svg", width="600">
+<img src="https://www.knative.dev/docs/images/knative-audience.svg" width="600">
 
 ### knative component
 1. [Build](https://github.com/knative/build/) - Source-to-container build orchestration
@@ -57,4 +57,72 @@ or documentation on using Knative Serving, see the serving folder of the Knative
 For documentation on the Knative Serving specification, see the docs folder of this repository.
 If you are interested in contributing, see CONTRIBUTING.md and DEVELOPMENT.md.
 
+### Getting Started with App Deployment
+#### Configuring your deployemnt
+knative에서 app을 배포하기 위해 service를 정의하는 yaml configuration file이 필요하다. 
+[for more information about the Service Object](https://github.com/knative/serving/blob/master/docs/spec/overview.md#service)'
 
+* Service.yaml
+```yaml
+apiVersion: serving.knative.dev/v1alpha1 # Current version of Knative
+kind: Service
+metadata:
+  name: helloworld-go # The name of the app
+  namespace: default # The namespace the app will use
+spec:
+  runLatest:
+    configuration:
+      revisionTemplate:
+        spec:
+          container:
+            image: gcr.io/knative-samples/helloworld-go # The URL to the image of the app
+            env:
+              - name: TARGET # The environment variable printed out by the sample app
+                value: "Go Sample v1"
+````
+
+#### Deploying your app
+```
+kubectl apply -f service.yaml
+```
+
+Now that your service is created, Knative will perform the following steps:
+
+* Create a new immutable revision for this version of the app.
+* Perform network programming to create a route, ingress, service, and load balancer for your app.
+* Automatically scale your pods up and down based on traffic, including to zero active pods.
+
+#### Interacting with your app
+app이 성공적으로 배포되었는지를 보기 위해 knative에서 생성된 host URL과 IP Address가 필요하다.
+
+1. To find the IP address for your service
+
+```
+# In Knative 0.2.x and prior versions, the `knative-ingressgateway` service was used instead of `istio-ingressgateway`.
+   INGRESSGATEWAY=knative-ingressgateway
+
+   # The use of `knative-ingressgateway` is deprecated in Knative v0.3.x.
+   # Use `istio-ingressgateway` instead, since `knative-ingressgateway`
+   # will be removed in Knative v0.4.
+   if kubectl get configmap config-istio -n knative-serving &> /dev/null; then
+       INGRESSGATEWAY=istio-ingressgateway
+   fi
+
+   kubectl get svc $INGRESSGATEWAY --namespace istio-system
+
+   NAME                     TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)                                      AGE
+   istio-ingressgateway   LoadBalancer   10.23.247.74   35.203.155.229   80:32380/TCP,443:32390/TCP,32400:32400/TCP   2d
+```
+
+EXTERAL-IP address를 기억하고 다음 명령어에서 변수로써 ip address를 export해라
+```
+   export IP_ADDRESS=$(kubectl get svc $INGRESSGATEWAY --namespace istio-system --output 'jsonpath={.status.loadBalancer.ingress[0].ip}')
+```
+
+> NOTES: 만약 external load balancer를 가지고 있지 않다면, EXTERNAL-IP field는 `<pending>`으로 되어있습니다. 
+> 그러므로 대신 NodeIP와 NodePort를 사용할 필요가 있습니다.
+> apps의 NodeIP와 NodePort를 얻기 위해서는 다음과 같이 명령어를 수행해야 합니다.
+
+```
+   export IP_ADDRESS=$(kubectl get node  --output 'jsonpath={.items[0].status.addresses[0].address}'):$(kubectl get svc $INGRESSGATEWAY --namespace istio-system   --output 'jsonpath={.spec.ports[?(@.port==80)].nodePort}')
+```
