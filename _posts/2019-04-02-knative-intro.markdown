@@ -11,6 +11,7 @@ tags: [serverless, knative, kubernetes]
 ## Table of Contents
 1. [knative document](#knative_document)
 2. [knative component](#knative_component)
+3. [Example](#Example)
 
 ### knative document 
 [welcom knative](https://www.knative.dev/docs/)
@@ -28,8 +29,12 @@ Kubernetes offers a feature called Custom Resource Definitions (CRDs).
 With CRDs, third party Kubernetes controllers like Istio or Knative can install more APIs into Kubernetes
 Resource Type
 * Service
-* Build
+* Build / BuildTemplate
 * Event
+
+<img src="https://i1.wp.com/blog.openshift.com/wp-content/uploads/Build-Overview.png?w=703&ssl=1" width="800>
+
+[openshift knative:building your serverless service](https://blog.openshift.com/knative-building-your-serverless-service/)                                                                                                    
 
 Knative installs of three families of custom resource APIs:
 
@@ -138,3 +143,11 @@ EXTERAL-IP address를 기억하고 다음 명령어에서 변수로써 ip addres
 ```
    export IP_ADDRESS=$(kubectl get node  --output 'jsonpath={.items[0].status.addresses[0].address}'):$(kubectl get svc $INGRESSGATEWAY --namespace istio-system   --output 'jsonpath={.spec.ports[?(@.port==80)].nodePort}')
 ```
+
+### Example
+
+[knative-build-tutorials](https://github.com/GoogleCloudPlatform/knative-build-tutorials/tree/master/getting-started)
+
+[announcing riff v0.2.0](https://projectriff.io/blog/announcing-riff-0-2-0/)
+[riff is for functions](https://github.com/projectriff/riff/)
+[How to run knative using riff on GKE](https://projectriff.io/docs/getting-started/gke/)
