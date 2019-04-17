@@ -1,13 +1,12 @@
 ---
 layout: post
 title: Why Knative
-date: 2019-01-06
+date: 2019-04-17
 categories: serverless
 author: himang10
 tags: [knative, serverless, kubernetes]
 ---
 
-# Table of Contents
 1. [서버없는 세계에서 Knative에 의한 통합이 진행](#서버없는_세계에서_Knative에_의한_통합이_진행)
 2. [Why Knative](#Why_Knative)
 3. [Knative(and Istio)의 목적은?](#Knative(and_Istio)의_목적은?)

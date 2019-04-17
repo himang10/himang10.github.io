@@ -9,11 +9,9 @@ thumbnail: "assets/img/thumbnails/desk-messy.jpeg"
 tags: [Test, Lorem]
 ---
 
-# Table of Contents
 1. [xxx](#xxx)
 2. [xxx](#xxx)
 3. [xxx](#xxx)
 
-# File loading
-# _post 와 동일 디렉토리에 files/순이익-매출 지수.PNG 존재
+### File loading
 <img src="/files/순이익-매출 지수.PNG" width="600"> 
