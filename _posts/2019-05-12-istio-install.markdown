@@ -234,6 +234,7 @@ NAME            STATUS   ROLES         AGE   VERSION          LABELS
 
 * 구성 순서
 1. 위에서 아래로 수동으로 반영 (추후 Helm Chart Customize 예정)
+
 ```
 root@cluster2-node-1:~# kubectl get pods
 NAME                                      READY   STATUS      RESTARTS   AGE
@@ -274,6 +275,7 @@ root@cluster2-node-1:~#
 ```
 
 2. grafana
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy grafana
  
@@ -339,6 +341,7 @@ istio-grafana-post-install-1.1.5-bwjzk    0/1     Completed   0          18m
 ```
 
 3. citadel
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-citadel
  
@@ -393,6 +396,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-citadel
 ```
 
 4. egressgateway
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-egressgateway
  
@@ -458,6 +462,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-egressgateway
 ```
 
 5. galley
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-galley
  
@@ -515,6 +520,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-galley
 ```
 
 6. ingressgateway
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-citadel
  
@@ -588,6 +594,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-citadel
 ```
 
 7. pilot
+
 ```
   root@cluster2-node-1:~# kubectl edit deploy istio-citadel
  
@@ -640,6 +647,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-citadel
 ```
 
 8. policy
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-citadel
  
@@ -698,6 +706,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-citadel
 ```
 
 9. sidecar-injector
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-citadel
  
@@ -756,6 +765,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-citadel
 ```
 
 10. telemetry
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-citadel
  
@@ -811,6 +821,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-citadel
 ```
 
 11. tracing
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-citadel
  
@@ -864,6 +875,7 @@ status:
 ```
 
 12. coredns
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-citadel
  
@@ -920,6 +932,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-citadel
 ```
 
 13. kiali
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-citadel
  
@@ -973,6 +986,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-citadel
 ```
 
 14. prometheus
+
 ```
 root@cluster2-node-1:~# kubectl edit deploy istio-citadel
  
@@ -1031,6 +1045,7 @@ root@cluster2-node-1:~# kubectl edit deploy istio-citadel
 ** 192.168.50.3
 * Management Node
 ** 192.168.50.10
+
 ```
 root@cluster2-node-1:~# kubectl get pods -o wide
 NAME                                      READY   STATUS      RESTARTS   AGE    IP              NODE            NOMINATED NODE

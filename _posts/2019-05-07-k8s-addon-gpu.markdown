@@ -37,6 +37,11 @@ tags: [kubernetes, gpu]
 **Target**
 * Users can describe the application for a shared resource through API, and can realize the scheduling of such resource.
 
+**Non target**
+* Isolation of this shared resource is not supported
+* Overselling is not supported
+
+**Design principles**
 
 ### 상세 내용은 아래 참고
 
