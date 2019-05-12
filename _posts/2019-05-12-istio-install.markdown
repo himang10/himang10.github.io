@@ -18,6 +18,7 @@ tags: [istio, install]
 [https://github.com/istio/istio/releases/download/1.1.5/istio-1.1.5-linux.tar.gz](https://github.com/istio/istio/releases/download/1.1.5/istio-1.1.5-linux.tar.gz)
 
 * 다운로드 및 압축 해제
+
 ```
 root@cluster2-node-1:~# wget https://github.com/istio/istio/releases/download/1.1.5/istio-1.1.5-linux.tar.gz
 --2019-05-08 13:35:04--  https://github.com/istio/istio/releases/download/1.1.5/istio-1.1.5-linux.tar.gz
@@ -73,6 +74,7 @@ root@cluster2-node-1:~#
 1. CRD 설치용 파일 생성
 1. Istio 1.1.5 설치용 파일 생성
 1. 설치
+
 ```
 root@cluster2-node-1:~# ls istio-1.1.5
 LICENSE  README.md  bin  install  istio.VERSION  samples  tools
