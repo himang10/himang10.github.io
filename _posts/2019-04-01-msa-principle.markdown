@@ -2,7 +2,7 @@
 layout: post
 title: 마이크로서비스 원칙
 date: 2019-04-01
-categories: msa
+categories: MSA
 author: himang10
 tags: [msa, principle]
 ---
