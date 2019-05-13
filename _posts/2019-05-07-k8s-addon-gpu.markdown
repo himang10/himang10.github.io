@@ -42,6 +42,30 @@ tags: [kubernetes, gpu]
 * Overselling is not supported
 
 **Design principles**
+* Define the problem and simplify the design. The first step is only responsible for scheduling and deployment, and then realize the display and memory control at runtime.
+There are many clear demands of customers that they can first support multi-AI applications to be scheduled to the same GPU, and they can accept the control of memory size from the application level, using similar technologies.gpu_options.per_process_gpu_memory_fractionControl the display memory usage of the application. The problem we need to solve is to simplify the display memory as the scheduling ruler, and transfer the size of the display memory to the container in the form of parameters.
+* No intrusive modifications
+The design of Extended Resource, the implementation of Scheduler, the mechanism of Device Plugin and the design of Kubelet will not be modified in this design. Reuse Extended Resource to describe the application API for shared resources. The advantage of this is to provide a portable solution that users can use in native Kubernetes.
+* It can coexist in the cluster in the way of display memory and card scheduling, but it is mutually exclusive in the same node, which does not support the coexistence of the two; either by the number of cards or by the display memory allocation.
+
+**detailed design**
+Premise:
+
+* Kubernetes Extended Resource 정의가 여전히 사용되지만 측정 단위의 최소 단위가 GPU 카드에서 GPU 메모리의 MiB로 변경됩니다. 노드에서 사용하는 GPU가 단일 카드 16GiB 메모리 인 경우 해당 자원은 16276MiB입니다.
+* GPU 공유에 대한 사용자의 요구가 모델 개발 및 모델 예측의 시나리오에 있기 때문에 이 시나리오에서 사용자가 적용한 GPU 리소스의 상한은 하나의 카드를 초과하지 않습니다. 즉, 적용되는 리소스의 최대 한도는 단일 카드입니다.
+
+첫번째 작업은 두개의 새로운 Extended Resources를 정의하는 것이다. 
+* 첫번째는 gpu-mem이다. (GPU Memory)
+* 두번째는 gpu-count. (GPU Cards 수)
+
+다음 그림은 기본 도식도 이다. 
+<img src="/files/gpu_img1.jpg" width="600"> 
+
+**Core function Modules:**
+* **GPU Share Scheduler Extender**  kubernetes scheduler extension mechanism을 사용함으로써, 글로벌 스케줄러가 Filter and Bind 할 때 노드의 단일 GPU 카드가 충분한 GPU Mem을 제공 할 수 있는지, 할당 결과를 확인하기 위해 Bind 시간에 Annotation을 통해 Pod Spec에 GPU 할당 결과를 기록하는지 여부를 판단할 책임이 있다.
+* **GPU Share Device Plugin** Device Plugin mechanism을 사용함으로써, 노드는 스케줄러 Extender 할당 결과에 따라 GPU 카드 할당을 담당하는 Kubelet에 의해 호출됩니다.
+
+**Specific Process:**
 
 ### 상세 내용은 아래 참고
 
