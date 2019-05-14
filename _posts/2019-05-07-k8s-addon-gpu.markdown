@@ -59,7 +59,8 @@ Premise:
 * 두번째는 gpu-count. (GPU Cards 수)
 
 다음 그림은 기본 도식도 이다. 
-<img src="/files/gpu_img1.jpg" width="600"> 
+
+<img src="/files/gpu_img1.jpg" width="700"> 
 
 **Core function Modules:**
 * **GPU Share Scheduler Extender**  kubernetes scheduler extension mechanism을 사용함으로써, 글로벌 스케줄러가 Filter and Bind 할 때 노드의 단일 GPU 카드가 충분한 GPU Mem을 제공 할 수 있는지, 할당 결과를 확인하기 위해 Bind 시간에 Annotation을 통해 Pod Spec에 GPU 할당 결과를 기록하는지 여부를 판단할 책임이 있다.
