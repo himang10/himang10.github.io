@@ -2,9 +2,9 @@
 layout: post
 title: GPU Configuration for kubernetes
 date: 2019-05-07
-categories: kubernetes
+categories: kubernetes-addon
 author: himang10
-tags: [nvidia, gpu, kuberentes]
+tags: [nvidia, gpu, kubernetes]
 ---
 
 #### kubernetes NVIIDA GPU Driver and DevicePlugin installation
