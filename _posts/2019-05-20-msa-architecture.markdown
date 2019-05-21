@@ -33,7 +33,7 @@ tags: [msa, principle]
 
 ### 모놀리틱 아키텍처 (Monolithic Architecture)
 
-<img src="/files/monolithic.png" width="600"> 
+<img src="/files/monolithic.png" width="400"> 
 
 #### 장점
 
@@ -106,6 +106,8 @@ tags: [msa, principle]
 
 > 직의 의사결정 프로세스와 테스트 및 배포 프로세스 등 많은 부분에 영향을 미친다는 것을 의미
 
+<img src="/files/microservice-장점.png" width="600">
+
 #### 단점
 
 * 서비스 간의 통신에 대한 처리가 추가적으로 필요하며, 이로 인해 사용자의 요청을 처리하기 위한 응답속도의 증가에 영향을 미침
@@ -126,6 +128,6 @@ tags: [msa, principle]
 결국 이것은 필연적으로 매우 정교한 배포 자동화와 운영 자동화 등을 필요로 하며 많은 PaaS(Platform as a Service) 서비스, 또는 도커(Docker)와 같은 컨테이너 기술을 활용하여 도움을 받을 수 있습니다.
 또한 서비스간 통신 (REST API, Event Driven) 관리를 위한 서비스에 대한 서비스 제공을 받아야 합니다.
 
-<img src="/files/microservice-장단점.png" width="600">
+<img src="/files/microservice-단점.png" width="600">
 
 [참고자료-마이크로서비스-총정리 글](https://www.popit.kr/%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C-%EC%84%9C%EB%B9%84%EC%8A%A4-%EA%B4%80%EB%A0%A8-%EA%B8%80-%EC%B4%9D%EC%A0%95%EB%A6%AC/)
