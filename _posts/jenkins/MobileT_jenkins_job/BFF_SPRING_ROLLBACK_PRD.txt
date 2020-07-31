@@ -1,0 +1,119 @@
+##########################################################################################
+###################### BFF_SPRING_ROLLBACK_PRD ###########################################
+##########################################################################################
+@Library('retort') _
+import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
+def stage(name, execute, block) {
+    return stage(name, execute ? block : {
+        echo "Skipped stage : $name"
+        Utils.markStageSkippedForConditional(STAGE_NAME)
+    })
+}
+timestamps {
+ def label = "jenkins-${UUID.randomUUID().toString()}"
+ 
+ podTemplate(cloud: K8S_POD_TEMPLATE, label:label, serviceAccount: K8S_DVS_SA, terminationGracePeriodSeconds: 60,
+  containers: [
+      containerTemplate(name: 'jnlp', image: "${DOCKER_REGISTRY}/${DOCKER_DVS_NAMESPACE}/jnlp-slave:latest", args: '${computer.jnlpmac} ${computer.name}'),
+   containerTemplate(name: 'kubectl', image: "${DOCKER_REGISTRY}/${DOCKER_DVS_NAMESPACE}/k8s-kubectl", ttyEnabled: true, command: 'cat')
+  ],
+  volumes: [
+   hostPathVolume(hostPath: '/etc/hosts', mountPath: '/etc/hosts')
+  ],
+  workspaceVolume: 
+   persistentVolumeClaimWorkspaceVolume(claimName: WORKSPACE_PVC, readOnly: false)
+  ) {
+  node(label) {
+   def isExecute = true
+   def isExists = false
+   
+   stage('Check Out Source', isExecute) {
+    gitCmd.checkout credentialsId: GIT_CREDENTIAL, url: GIT_URL, branch: GIT_BRANCH
+   }
+   
+   stage('Validate Version', isExecute) {
+    container('kubectl') {
+     
+     def CURRENT_DOCKER_IMAGE
+     def CURRENT_VER
+     def DEPLOY_VER
+     
+     isExists = kubeCmd.resourceExists file: "k8s/deployment-prd.yml", namespace: K8S_APP_NAMESPACE
+     
+     if(isExists) {     
+      CURRENT_VER = sh (script: "kubectl -n ${K8S_APP_NAMESPACE} get service ${K8S_APP_NAME} -o=jsonpath={.spec.selector.version}", returnStdout: true)
+      CURRENT_DOCKER_IMAGE = sh (script: "kubectl -n ${K8S_APP_NAMESPACE} get deployment ${K8S_APP_NAME}-${CURRENT_VER} -o=jsonpath={.spec.template.spec.containers[0].image}", returnStdout: true)
+      DEPLOY_VER = VERSION.split(/\./)[0] + '.' + VERSION.split(/\./)[1]
+      
+      if(CURRENT_VER == DEPLOY_VER) {
+       echo 'Deployment version is equal to current deployment version'
+       currentBuild.result = 'UNSTABLE'
+       isExecute = false
+       return
+      }
+      
+      // check docker image whether current image is equal to deploy image
+      if("${DOCKER_REGISTRY}/${K8S_APP_NAMESPACE}/${K8S_APP_NAME}:${VERSION}" == CURRENT_DOCKER_IMAGE) {
+       echo 'Docker image is equal to current docker image'
+       currentBuild.result = 'UNSTABLE'
+       isExecute = false
+       return
+      }
+     }
+    }     
+   }   
+   
+   stage('Roll Back On Kubernetes', isExecute) {                  
+   
+    container('kubectl') {
+     def ROLLBACK_DEPLOY
+     def CURRENT_VER
+     def CURRENT_DEPLOY
+     def REPLICAS   
+     
+     if(isExists) {            
+      CURRENT_VER = sh (script: "kubectl -n ${K8S_APP_NAMESPACE} get service ${K8S_APP_NAME} -o=jsonpath={.spec.selector.version}", returnStdout: true)      
+      CURRENT_DEPLOY = K8S_APP_NAME + '-' + CURRENT_VER      
+      REPLICAS = sh (script: "kubectl -n ${K8S_APP_NAMESPACE} get deploy ${CURRENT_DEPLOY} -o=jsonpath={.spec.replicas}", returnStdout: true) 
+      DEPLOY_VER = VERSION.split(/\./)[0] + '.' + VERSION.split(/\./)[1] 
+      ROLLBACK_DEPLOY = K8S_APP_NAME + '-' + DEPLOY_VER
+              
+      sh "cp k8s/deployment-prd.yml k8s/deployment-prd-bak.yml"    
+      sh "cp k8s/service-prd.yml k8s/service-prd-bak.yml"
+      sh "cp k8s/service-g.yml k8s/service-g-bak.yml"
+      
+      // green service-yaml file version update
+      yaml.bluegreenServiceUpdate file: 'k8s/service-g.yml'
+      
+      // deploy-yaml file version update
+      yaml.bluegreenDeployUpdate file: 'k8s/deployment-prd.yml'
+      // update public service-yml file version update
+      yaml.bluegreenServiceUpdate file: "k8s/service-prd.yml"
+      
+      // deploy rollback app
+      kubeCmd.apply file: "k8s/deployment-prd.yml", namespace: K8S_APP_NAMESPACE, recoverOnFail: true, recoverFile: "k8s/deployment-prd-bak.yml"
+      
+      // sacle deploy app
+      kubeCmd.scale type: 'deployment', namespace: K8S_APP_NAMESPACE, name: ROLLBACK_DEPLOY, replicas: REPLICAS
+      
+      // apply service
+      kubeCmd.apply file: 'k8s/service-prd.yml', namespace: K8S_APP_NAMESPACE, recoverOnFail: true, recoverFile: "k8s/service-prd-bak.yml"
+      
+      // apply green service
+      kubeCmd.apply file: 'k8s/service-g.yml', namespace: K8S_APP_NAMESPACE, recoverOnFail: true, recoverFile: "k8s/service-g-bak.yml"
+      
+      // delete old app
+      kubeCmd.delete type: 'deployment', namespace: K8S_APP_NAMESPACE, name: CURRENT_DEPLOY
+     }
+    }
+   }
+   
+   stage('Update SCM & Build History', isExecute) {
+    gitCmd.commit file: ['k8s/service-g.yml', 'k8s/deployment-prd.yml', 'k8s/service-prd.yml']
+    gitCmd.push credentialsId: GIT_CREDENTIAL
+    
+    currentBuild.description = VERSION
+   }   
+  }
+ }      
+}

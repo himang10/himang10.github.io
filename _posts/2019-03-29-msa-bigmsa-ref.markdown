@@ -2,7 +2,7 @@
 layout: post
 title: 대규모 마이크로서비스
 date: 2019-03-29
-categories: MSA
+categories: msa
 author: himang10
 tags: [msa, architecture]
 ---

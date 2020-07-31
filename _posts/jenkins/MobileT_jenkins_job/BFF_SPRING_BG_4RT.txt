@@ -1,0 +1,71 @@
+##########################################################################################
+###################### BFF_SPRING_BG_4RT ##### ###########################################
+##########################################################################################
+
+@Library('retort') _
+timestamps {
+ def label = "jenkins-${UUID.randomUUID().toString()}"
+ podTemplate(cloud: K8S_POD_TEMPLATE, label:label, serviceAccount: K8S_DVS_SA, terminationGracePeriodSeconds: 60,
+  containers: [
+   containerTemplate(name: 'jnlp', image: "${DOCKER_REGISTRY}/${DOCKER_DVS_NAMESPACE}/jnlp-slave:latest", args: '${computer.jnlpmac} ${computer.name}'),
+   containerTemplate(name: 'kubectl', image: "${DOCKER_REGISTRY}/${DOCKER_DVS_NAMESPACE}/k8s-kubectl", ttyEnabled: true, command: 'cat')
+  ],
+  volumes: [
+   hostPathVolume(hostPath: '/etc/hosts', mountPath: '/etc/hosts')
+  ],
+  workspaceVolume: 
+   persistentVolumeClaimWorkspaceVolume(claimName: WORKSPACE_PVC, readOnly: false)
+  ) {
+  node(label) {
+   stage('Check Out Source') {
+    gitCmd.checkout credentialsId: GIT_CREDENTIAL, url: GIT_URL, branch: GIT_BRANCH
+   }
+   
+   stage('Switch Blue On Kubernetes') {
+    container('kubectl') {
+     def BLUE_VER
+     def BLUE_DEPLOY
+     
+     // green service-yaml file version update
+     yaml.bluegreenServiceUpdate file: 'k8s/service-g.yml'
+     
+     // deploy-yaml file version update
+     yaml.bluegreenDeployUpdate file: 'k8s/deployment-prd.yml'
+     
+     // copy current blue service yaml as temp yaml(_blue.yml)
+     if(IS_INIT_DEPLOY == 'false') {
+      sh "kubectl get svc -n ${K8S_APP_NAMESPACE} -o=yaml --export ${K8S_APP_NAME} > k8s/service-b-prd.yml"
+     } 
+     
+     // update public service-yml file version update
+     yaml.bluegreenServiceUpdate file: "k8s/service-prd.yml"
+     
+     // get deploy version from current blue service
+     if(IS_INIT_DEPLOY == 'false') {
+      BLUE_VER = sh (script: "kubectl -n ${K8S_APP_NAMESPACE} get service ${K8S_APP_NAME} -o=jsonpath={.spec.selector.version}", returnStdout: true)
+      BLUE_DEPLOY = K8S_APP_NAME + '-' + BLUE_VER
+      
+      // route new blue service to new green deploy
+      kubeCmd.apply file: "k8s/service-prd.yml", namespace: K8S_APP_NAMESPACE, recoverOnFail: true, recoverFile: "k8s/service-b-prd.yml"
+      
+      // delete old blue apply
+      kubeCmd.delete type: 'deploy', namespace: K8S_APP_NAMESPACE, name: BLUE_DEPLOY
+     } else {
+      // route new blue service to new green deploy
+      kubeCmd.apply file: "k8s/service-prd.yml", namespace: K8S_APP_NAMESPACE, recoverOnFail: true
+     }          
+     
+     sh 'rm -f k8s/service-b-prd.yml'
+    }
+   }
+   
+   stage('Update SCM & Build History') {
+    //mavenBuild.updateVersion version: VERSION
+    gitCmd.commit file: ['k8s/service-g.yml', 'k8s/deployment-prd.yml', 'k8s/service-prd.yml']
+    gitCmd.push credentialsId: GIT_CREDENTIAL
+    
+    currentBuild.description = VERSION
+   }
+  }
+ }
+}

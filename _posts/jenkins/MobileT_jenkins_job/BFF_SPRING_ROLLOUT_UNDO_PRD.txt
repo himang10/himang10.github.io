@@ -1,0 +1,75 @@
+##########################################################################################
+###################### BFF_SPRING_ROLLOUT_UNDO_PRD #######################################
+##########################################################################################
+@Library('retort') _
+import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
+def stage(name, execute, block) {
+    return stage(name, execute ? block : {
+        echo "Skipped stage : $name"
+        Utils.markStageSkippedForConditional(STAGE_NAME)
+    })
+}
+timestamps {
+ def label = "jenkins-${UUID.randomUUID().toString()}"
+ 
+ podTemplate(cloud: K8S_POD_TEMPLATE, label:label, serviceAccount: K8S_DVS_SA, terminationGracePeriodSeconds: 60,
+  containers: [
+      containerTemplate(name: 'jnlp', image: "${DOCKER_REGISTRY}/${DOCKER_DVS_NAMESPACE}/jnlp-slave:latest", args: '${computer.jnlpmac} ${computer.name}'),
+   containerTemplate(name: 'kubectl', image: "${DOCKER_REGISTRY}/${DOCKER_DVS_NAMESPACE}/k8s-kubectl", ttyEnabled: true, command: 'cat')
+  ],
+  volumes: [
+   hostPathVolume(hostPath: '/etc/hosts', mountPath: '/etc/hosts')
+  ],
+  workspaceVolume: 
+   persistentVolumeClaimWorkspaceVolume(claimName: WORKSPACE_PVC, readOnly: false)
+  ) {
+  node(label) {
+   def isExecute = true
+   def isExists = false
+   def VERSION
+   
+   stage('Check Out Source', isExecute) {
+    gitCmd.checkout credentialsId: GIT_CREDENTIAL, url: GIT_URL, branch: GIT_BRANCH
+   }
+   
+   stage('Roll Out Undo On Kubernetes', isExecute) {                     
+    container('kubectl') {
+     def CURRENT_VER
+     def CURRENT_DOCKER_IMAGE     
+     
+     isExists = kubeCmd.resourceExists file: "k8s/deployment-prd.yml", namespace: K8S_APP_NAMESPACE
+     
+     if(isExists) {                                
+      // rollout undo
+      try {
+       CURRENT_VER = sh (script: "kubectl -n ${K8S_APP_NAMESPACE} get service ${K8S_APP_NAME} -o=jsonpath={.spec.selector.version}", returnStdout: true)
+       
+       sh "kubectl -n ${K8S_APP_NAMESPACE} rollout undo deployment/${K8S_APP_NAME}-${CURRENT_VER}"
+                       
+       CURRENT_DOCKER_IMAGE = sh (script: "kubectl -n ${K8S_APP_NAMESPACE} get deployment ${K8S_APP_NAME}-${CURRENT_VER} -o=jsonpath={.spec.template.spec.containers[0].image}", returnStdout: true)
+       VERSION = CURRENT_DOCKER_IMAGE.split(":")[2]       
+       
+       // deploy-yaml file version update
+       yaml.rollingDeployUpdate file: 'k8s/deployment-prd.yml', version: VERSION
+       
+       isExecute = true
+      } catch (Exception e) {
+       echo 'Exception occured while waiting rollout undo.'
+       echo e.toString()
+       currentBuild.result = 'UNSTABLE'
+       isExecute = false
+      }
+     }
+    }
+   }
+   
+   stage('Update SCM & Build History', isExecute) {
+    gitCmd.commit file: ['k8s/deployment-prd.yml']
+    gitCmd.push credentialsId: GIT_CREDENTIAL
+    
+    currentBuild.description = VERSION
+   }   
+  }
+ }      
+}
+ 
